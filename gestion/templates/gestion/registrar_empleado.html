@@ -1,0 +1,55 @@
+{% extends 'gestion/base.html' %}
+
+{% block title %}Registrar Nuevo Empleado{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h1 class="card-title mb-4">Registrar Nuevo Empleado</h1>
+                <form method="post">
+                    {% csrf_token %}
+
+                    {% if form.non_field_errors %}<div class="alert alert-danger">{{ form.non_field_errors }}</div>{% endif %}
+
+                    <div class="mb-3">
+                        <label for="{{ form.username.id_for_label }}" class="form-label">Nombre de Usuario</label>
+                        {{ form.username }}
+                        {% for error in form.username.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="{{ form.password.id_for_label }}" class="form-label">Contraseña</label>
+                        {{ form.password }}
+                        {% for error in form.password.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+                    </div>
+                     <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.nombre.id_for_label }}" class="form-label">Nombre</label>
+                            {{ form.nombre }}
+                            {% for error in form.nombre.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.apellido.id_for_label }}" class="form-label">Apellido</label>
+                            {{ form.apellido }}
+                            {% for error in form.apellido.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="{{ form.email.id_for_label }}" class="form-label">Email</label>
+                        {{ form.email }}
+                        {% for error in form.email.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="{{ form.puesto.id_for_label }}" class="form-label">Puesto</label>
+                        {{ form.puesto }}
+                        {% for error in form.puesto.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+                    </div>
+
+                    <button type="submit" class="btn btn-primary mt-3">Registrar Empleado</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

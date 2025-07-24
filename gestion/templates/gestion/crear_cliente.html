@@ -1,0 +1,76 @@
+{% extends 'gestion/base.html' %}
+
+{% block title %}Crear Nuevo Cliente{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h1 class="card-title mb-4">Crear Nuevo Cliente</h1>
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {{ form.non_field_errors }}
+                        </div>
+                    {% endif %}
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.nombre.id_for_label }}" class="form-label">Nombre</label>
+                            <input type="text" name="nombre" value="{{ form.nombre.value|default:'' }}" class="form-control {% if form.nombre.errors %}is-invalid{% endif %}" id="{{ form.nombre.id_for_label }}">
+                            {% for error in form.nombre.errors %}
+                                <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.apellido.id_for_label }}" class="form-label">Apellido</label>
+                            <input type="text" name="apellido" value="{{ form.apellido.value|default:'' }}" class="form-control {% if form.apellido.errors %}is-invalid{% endif %}" id="{{ form.apellido.id_for_label }}">
+                            {% for error in form.apellido.errors %}
+                                <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.email.id_for_label }}" class="form-label">Email</label>
+                        <input type="email" name="email" value="{{ form.email.value|default:'' }}" class="form-control {% if form.email.errors %}is-invalid{% endif %}" id="{{ form.email.id_for_label }}">
+                        {% for error in form.email.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.dni.id_for_label }}" class="form-label">DNI</label>
+                            <input type="text" name="dni" value="{{ form.dni.value|default:'' }}" class="form-control {% if form.dni.errors %}is-invalid{% endif %}" id="{{ form.dni.id_for_label }}">
+                            {% for error in form.dni.errors %}
+                                <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.telefono.id_for_label }}" class="form-label">Teléfono</label>
+                            <input type="text" name="telefono" value="{{ form.telefono.value|default:'' }}" class="form-control {% if form.telefono.errors %}is-invalid{% endif %}" id="{{ form.telefono.id_for_label }}">
+                            {% for error in form.telefono.errors %}
+                                <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.fecha_nacimiento.id_for_label }}" class="form-label">Fecha de Nacimiento</label>
+                        {{ form.fecha_nacimiento }}
+                        {% for error in form.fecha_nacimiento.errors %}
+                            <div class="invalid-feedback d-block">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <button type="submit" class="btn btn-primary mt-3">Guardar Cliente</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

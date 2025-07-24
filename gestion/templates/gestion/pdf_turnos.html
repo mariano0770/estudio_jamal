@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Turnos del Día</title>
+    <style>
+        body { font-family: sans-serif; }
+        h1 { color: #333; text-align: center; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+    </style>
+</head>
+<body>
+    <h1>Turnos para el día: {{ hoy|date:"d/m/Y" }}</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Hora</th>
+                <th>Cliente</th>
+                <th>Servicio</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for turno in turnos %}
+            <tr>
+                <td>{{ turno.fecha_hora_inicio|time:"H:i" }}</td>
+                <td>{{ turno.cliente.nombre }} {{ turno.cliente.apellido }}</td>
+                <td>{{ turno.servicio.nombre }}</td>
+                <td>{{ turno.estado }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" style="text-align:center;">No hay turnos programados para hoy.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,0 +1,33 @@
+{% extends 'gestion/base.html' %}
+
+{% block title %}Nuestros Servicios{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Nuestros Servicios ✨</h1>
+    <a href="{% url 'crear-servicio' %}" class="btn btn-primary">+ Nuevo Servicio</a>
+</div>
+
+<div class="row">
+    {% for servicio in servicios %}
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <h5 class="card-title">{{ servicio.nombre }}</h5>
+                    <a href="{% url 'editar-servicio' servicio.id %}" class="btn btn-secondary btn-sm">Editar</a>
+                </div>
+                <p class="card-text">{{ servicio.descripcion }}</p>
+                <p class="card-text">
+                    <strong class="text-primary fs-5">${{ servicio.precio|floatformat:2 }}</strong> - Duración: {{ servicio.duracion_minutos }} min.
+                </p>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col">
+        <div class="alert alert-info">No hay servicios para mostrar en este momento.</div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

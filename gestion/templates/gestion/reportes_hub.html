@@ -1,0 +1,30 @@
+{% extends 'gestion/base.html' %}
+
+{% block title %}Central de Reportes{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Central de Reportes 📊</h1>
+<p class="lead">Seleccioná el reporte que deseás ver.</p>
+
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">Reporte Financiero Mensual</h5>
+                <p class="card-text">Un resumen de los ingresos, egresos y el balance del mes actual.</p>
+                <a href="{% url 'reporte-financiero' %}" class="btn btn-primary mt-auto">Ver Reporte</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">Reporte de Asistencias</h5>
+                <p class="card-text">Un listado de los clientes que registraron su asistencia en un rango de fechas seleccionado.</p>
+                <a href="{% url 'reporte-asistencias' %}" class="btn btn-primary mt-auto">Ver Reporte</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,147 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda Completa - EstéticaSys</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+    <style>
+        /* --- ESTILOS A PRUEBA DE BALAS PARA EL CALENDARIO --- */
+
+        /* Reseteo básico para evitar problemas de espaciado */
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden; /* CRÍTICO: Evita que la página entera tenga scroll */
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        /* Contenedor principal que ocupa toda la pantalla */
+        #calendar-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh; /* Ocupa el 100% de la altura de la ventana */
+            background-color: #fff;
+        }
+
+        /* Cabecera con altura fija */
+        #calendar-header {
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+            flex-shrink: 0; /* IMPIDE que la cabecera se encoja */
+        }
+
+        /* Cuerpo del calendario que ocupa el espacio restante */
+        #calendar-body {
+            flex-grow: 1; /* CRÍTICO: Ocupa todo el espacio vertical sobrante */
+            padding: 1rem;
+            overflow: auto; /* Permite scroll DENTRO del calendario si es necesario */
+            position: relative; /* Necesario para que el hijo se posicione correctamente */
+        }
+        
+        /* El calendario en sí, que debe ser flexible */
+        #calendar {
+           width: 100%;
+           height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="calendar-container">
+        <div id="calendar-header" class="d-flex justify-content-between align-items-center">
+            <h1 class="h4 mb-0">Agenda de Turnos</h1>
+            <div>
+                <a href="{% url 'crear-turno' %}" class="btn btn-success">+ Agendar Turno</a>
+                <a href="{% url 'dashboard' %}" class="btn btn-secondary">Volver al Panel</a>
+            </div>
+        </div>
+        <div id="calendar-body">
+            <div id="calendar"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            const csrftoken = getCookie('csrftoken');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'timeGridWeek',
+                locale: 'es',
+                height: '100%',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                buttonText: {
+                    today:    'Hoy',
+                    month:    'Mes',
+                    week:     'Semana',
+                    day:      'Día'
+                },
+                navLinks: true,
+                events: '/api/turnos/',
+                editable: true, 
+                eventClick: function(info) {
+                    info.jsEvent.preventDefault();
+                    if (info.event.url) {
+                        window.location.href = info.event.url;
+                    }
+                },
+                eventDrop: function(info) {
+                    const evento = info.event;
+                    const datos = {
+                        id: evento.id,
+                        start: evento.start.toISOString(),
+                    };
+                    fetch('/api/turnos/update/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': csrftoken,
+                        },
+                        body: JSON.stringify(datos),
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status !== 'ok') {
+                            console.error('Error al actualizar el turno:', data.message);
+                            info.revert();
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error de red:', error);
+                        info.revert();
+                    });
+                }
+            });
+
+            calendar.render();
+        });
+    </script>
+</body>
+</html>

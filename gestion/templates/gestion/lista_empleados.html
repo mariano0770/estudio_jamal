@@ -1,0 +1,35 @@
+{% extends 'gestion/base.html' %}
+
+{% block title %}Lista de Empleados{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Gestión de Empleados 👥</h1>
+    <a href="{% url 'registrar-empleado' %}" class="btn btn-primary">+ Nuevo Empleado</a>
+</div>
+
+<table class="table table-striped table-hover">
+    <thead class="table-light">
+        <tr>
+            <th>Nombre y Apellido</th>
+            <th>Usuario</th>
+            <th>Puesto</th>
+            <th>Fecha de Contratación</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for empleado in empleados %}
+        <tr>
+            <td>{{ empleado.nombre }} {{ empleado.apellido }}</td>
+            <td>{{ empleado.user.username }}</td>
+            <td>{{ empleado.puesto }}</td>
+            <td>{{ empleado.fecha_contratacion|date:"d/m/Y" }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4" class="text-center">No hay empleados registrados.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

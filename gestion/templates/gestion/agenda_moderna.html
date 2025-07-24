@@ -1,0 +1,103 @@
+{% extends 'gestion/base.html' %}
+
+{% block title %}Agenda de Turnos{% endblock %}
+
+{% block content %}
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+
+<div class="row">
+    <div class="col-lg-4">
+        <h3 class="mb-3">Turnos de Hoy</h3>
+        <div class="list-group" style="max-height: 70vh; overflow-y: auto;">
+            {% for turno in turnos_de_hoy %}
+                <a href="{% url 'editar-turno' turno.id %}" class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h6 class="mb-1">{{ turno.cliente.nombre }}</h6>
+                        <small>{{ turno.fecha_hora_inicio|time:"H:i" }}</small>
+                    </div>
+                    <p class="mb-1 small text-muted">{{ turno.servicio.nombre }}</p>
+                </a>
+            {% empty %}
+                <p class="text-muted p-2">No hay turnos para hoy.</p>
+            {% endfor %}
+        </div>
+        <div class="d-grid gap-2 mt-4">
+            <a href="{% url 'crear-turno' %}" class="btn btn-success">+ Agendar Turno</a>
+        </div>
+    </div>
+
+    <div class="col-lg-8">
+        <div id="calendar" class="bg-white p-3 rounded shadow-sm"></div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');
+
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'timeGridWeek',
+            locale: 'es',
+            height: 'auto', // Se ajusta al contenido y la pantalla
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+            },
+            buttonText: { today: 'Hoy', month: 'Mes', week: 'Semana', day: 'Día', list: 'Lista' },
+            navLinks: true,
+            events: '/api/turnos/',
+            editable: true, 
+            eventClick: function(info) {
+                info.jsEvent.preventDefault();
+                if (info.event.url) {
+                    window.location.href = info.event.url;
+                }
+            },
+            eventDrop: function(info) {
+                const evento = info.event;
+                const datos = {
+                    id: evento.id,
+                    start: evento.start.toISOString(),
+                };
+                fetch('/api/turnos/update/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken,
+                    },
+                    body: JSON.stringify(datos),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status !== 'ok') {
+                        console.error('Error al actualizar el turno:', data.message);
+                        info.revert();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error de red:', error);
+                    info.revert();
+                });
+            }
+        });
+        calendar.render();
+    });
+</script>
+{% endblock %}

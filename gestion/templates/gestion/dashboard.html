@@ -1,0 +1,116 @@
+{% extends 'gestion/base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Panel de Control</h1>
+
+<div class="row">
+    <div class="col-lg-8">
+        
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3>Turnos de Hoy</h3>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                {% for turno in turnos_hoy %}
+                    <li class="list-group-item">{{ turno.fecha_hora_inicio|time:"H:i" }} - {{ turno.cliente }} ({{ turno.servicio.nombre }})</li>
+                {% empty %}
+                    <li class="list-group-item">No hay turnos para hoy.</li>
+                {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3>Resumen Financiero (Últimos 6 Meses)</h3>
+            </div>
+            <div class="card-body">
+                <canvas id="financialChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3>Acciones Rápidas</h3>
+            </div>
+            <div class="card-body d-grid gap-2">
+                <a href="{% url 'vender-abono' %}" class="btn btn-warning">🎟️ Vender Abono</a>
+                <a href="{% url 'vender-plan' %}" class="btn btn-info">Vender Plan / Suscripción</a>
+                <a href="{% url 'registrar-venta-producto' %}" class="btn btn-success">+ Vender Producto</a>
+                <a href="{% url 'registrar-egreso' %}" class="btn btn-danger">- Registrar Gasto</a>
+            </div>
+        </div>
+        
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3>Resumen Rápido</h3>
+            </div>
+            <div class="card-body">
+                <h5>Últimos Movimientos de Caja</h5>
+                <ul class="list-group list-group-flush mb-3">
+                {% for mov in ultimos_movimientos %}
+                    <li class="list-group-item">{{ mov.concepto }} - ${{ mov.monto|floatformat:2 }}</li>
+                {% empty %}
+                    <li class="list-group-item">No hay movimientos.</li>
+                {% endfor %}
+                </ul>
+                
+                <h5>Deudas de Empleados</h5>
+                <h4 class="text-danger">Total a Cobrar: ${{ total_deudas_pendientes|floatformat:2 }}</h4>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3>🎂 Próximos Cumpleaños</h3>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                {% for cliente in cumpleanos_proximos %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>{{ cliente.fecha_nacimiento|date:"d M" }}</strong> - {{ cliente.nombre }} {{ cliente.apellido }}
+                        </div>
+                        <a href="{% url 'enviar-saludo' cliente.id %}" class="btn btn-sm btn-outline-primary" title="Enviar Saludo">🎂</a>
+                    </li>
+                {% empty %}
+                    <li class="list-group-item">No hay cumpleaños en los próximos 7 días.</li>
+                {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Hacemos una petición a nuestra API para obtener los datos del gráfico
+        fetch("{% url 'api-financial-chart' %}")
+            .then(response => response.json())
+            .then(data => {
+                // Obtenemos el elemento canvas
+                const ctx = document.getElementById('financialChart').getContext('2d');
+                
+                // Creamos el nuevo gráfico
+                new Chart(ctx, {
+                    type: 'bar', // Tipo de gráfico
+                    data: data,  // Los datos vienen directamente de nuestra API
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            });
+    });
+</script>
+{% endblock %}

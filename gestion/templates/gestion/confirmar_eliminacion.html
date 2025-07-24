@@ -1,0 +1,21 @@
+{% extends 'gestion/base.html' %}
+{% block title %}Confirmar Eliminación{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card text-center shadow-sm">
+            <div class="card-header">Confirmación Requerida</div>
+            <div class="card-body">
+                <h1 class="card-title text-danger">¿Estás seguro?</h1>
+                <p>Estás a punto de eliminar permanentemente el objeto:</p>
+                <p class="lead"><strong>{{ objeto }}</strong></p>
+                <form method="post" class="mt-4">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+                    <a href="{{ request.META.HTTP_REFERER|escape }}" class="btn btn-secondary">No, volver atrás</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

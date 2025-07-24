@@ -1,0 +1,30 @@
+{% extends 'gestion/base.html' %}
+
+{% block title %}Lista de Clientes{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Mis Clientes 📋</h1>
+<a href="{% url 'crear-cliente' %}" class="btn btn-primary">+ Nuevo Cliente</a>
+</div>
+
+<form method="get" action="{% url 'lista-clientes' %}" class="mb-4">
+    <div class="input-group">
+        <input type="text" class="form-control" name="q" placeholder="Buscar por nombre, apellido o email..." value="{{ query|default:'' }}">
+        <button class="btn btn-outline-primary" type="submit">Buscar</button>
+    </div>
+</form>
+
+<div class="list-group">
+    {% for cliente in clientes %}
+        <a href="{% url 'detalle-cliente' cliente.id %}" class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">{{ cliente.apellido }}, {{ cliente.nombre }}</h5>
+                <small>ID: {{ cliente.id }}</small>
+            </div>
+            <p class="mb-1">Email: {{ cliente.email }} | Teléfono: {{ cliente.telefono }}</p>
+        </a>
+    {% empty %}
+        <div class="alert alert-info">Aún no hay clientes registrados.</div>
+    {% endfor %}
+</div>
+{% endblock %}

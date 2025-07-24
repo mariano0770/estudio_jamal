@@ -1,0 +1,25 @@
+{% extends 'gestion/base.html' %}
+{% block title %}Venta de Producto{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h1 class="card-title mb-4">Registrar Venta de Producto</h1>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="{{ form.producto.id_for_label }}" class="form-label">Producto</label>
+                        {{ form.producto }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="{{ form.cantidad.id_for_label }}" class="form-label">Cantidad</label>
+                        {{ form.cantidad }}
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-3">Registrar Venta</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

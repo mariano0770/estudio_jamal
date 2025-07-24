@@ -1,0 +1,53 @@
+{% extends 'gestion/base.html' %}
+
+{% block title %}Detalle de {{ cliente.nombre }}{% endblock %}
+
+{% block content %}
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="d-flex justify-content-between">
+            <h1 class="card-title">{{ cliente.nombre }} {{ cliente.apellido }}</h1>
+            <a href="{% url 'editar-cliente' cliente.id %}" class="btn btn-secondary align-self-start">Editar</a>
+        </div>
+        <p class="card-text"><strong>Email:</strong> {{ cliente.email }}</p>
+        <p class="card-text"><strong>Teléfono:</strong> {{ cliente.telefono }}</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h2>Historial de Turnos</h2>
+            </div>
+            <ul class="list-group list-group-flush">
+                {% for turno in turnos %}
+                <li class="list-group-item">
+                    {{ turno.fecha_hora_inicio|date:"d/m/Y H:i" }} - <strong>{{ turno.servicio.nombre }}</strong> (Estado: {{ turno.estado }})
+                </li>
+                {% empty %}
+                <li class="list-group-item">Este cliente no tiene turnos registrados.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h2>Abonos Comprados</h2>
+            </div>
+            <ul class="list-group list-group-flush">
+                {% for ca in abonos %}
+                <li class="list-group-item">
+                    <strong>{{ ca.abono.nombre }}</strong><br>
+                    <span class="badge bg-success">{{ ca.sesiones_restantes }} sesiones restantes</span>
+                </li>
+                {% empty %}
+                <li class="list-group-item">Este cliente no ha comprado abonos.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

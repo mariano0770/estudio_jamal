@@ -1,0 +1,48 @@
+{% extends 'gestion/cliente_base.html' %}
+
+{% block title %}Mi Cuenta{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Bienvenida/o, {{ cliente.nombre }}</h1>
+
+<div class="row">
+    <div class="col-md-7">
+        <div class="card">
+            <div class="card-header">
+                <h3>Tus Próximos Turnos</h3>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                {% for turno in proximos_turnos %}
+                    <li class="list-group-item">
+                        <strong>{{ turno.fecha_hora_inicio|date:"d/m/Y - H:i" }} hs</strong> - {{ turno.servicio.nombre }}
+                        <span class="badge bg-secondary float-end">{{ turno.estado }}</span>
+                    </li>
+                {% empty %}
+                    <li class="list-group-item">No tenés próximos turnos agendados.</li>
+                {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="card">
+            <div class="card-header">
+                <h3>Mis Abonos Activos</h3>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                {% for abono in abonos_activos %}
+                    <li class="list-group-item">
+                        <strong>{{ abono.abono.nombre }}</strong>
+                        <span class="badge bg-success float-end">{{ abono.sesiones_restantes }} sesiones restantes</span>
+                    </li>
+                {% empty %}
+                    <li class="list-group-item">No tenés abonos activos.</li>
+                {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

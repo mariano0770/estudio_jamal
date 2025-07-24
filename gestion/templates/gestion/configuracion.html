@@ -1,0 +1,68 @@
+{% extends 'gestion/base.html' %}
+
+{% block title %}Configuración{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Configuración del Sitio</h1>
+<div class="card shadow-sm">
+    <div class="card-body p-4">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}<div class="alert alert-danger">{{ form.non_field_errors }}</div>{% endif %}
+            
+            <fieldset>
+                <legend class="fs-5">Datos Generales</legend>
+                <div class="mb-3">
+                    <label for="{{ form.nombre_comercio.id_for_label }}" class="form-label">Nombre del Comercio</label>
+                    {{ form.nombre_comercio }}
+                    {% for error in form.nombre_comercio.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+                </div>
+                <div class="mb-3">
+                    <label for="{{ form.logo.id_for_label }}" class="form-label">Logo</label>
+                    {{ form.logo }}
+                    {% for error in form.logo.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+                    {% if form.instance.logo %}
+                        <small class="form-text text-muted">Logo actual: <a href="{{ form.instance.logo.url }}" target="_blank">{{ form.instance.logo.name }}</a></small>
+                    {% endif %}
+                </div>
+            </fieldset>
+
+            <hr class="my-4">
+
+            <fieldset>
+                <legend class="fs-5">Configuración de Email (para notificaciones)</legend>
+                <div class="mb-3">
+                    <label for="{{ form.email_remitente.id_for_label }}" class="form-label">Email Remitente</label>
+                    {{ form.email_remitente }}
+                    {% for error in form.email_remitente.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+                </div>
+                <div class="mb-3">
+                    <label for="{{ form.email_host.id_for_label }}" class="form-label">Servidor (Host)</label>
+                    {{ form.email_host }}
+                    {% for error in form.email_host.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ form.email_port.id_for_label }}" class="form-label">Puerto</label>
+                        {{ form.email_port }}
+                        {% for error in form.email_port.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ form.email_user.id_for_label }}" class="form-label">Usuario</label>
+                        {{ form.email_user }}
+                        {% for error in form.email_user.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="{{ form.email_password.id_for_label }}" class="form-label">Contraseña</label>
+                    {{ form.email_password }}
+                    {% for error in form.email_password.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+                </div>
+            </fieldset>
+
+            <button type="submit" class="btn btn-primary mt-3">Guardar Cambios</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,21 @@
+# Archivo: .gitignore
+
+# Entorno virtual
+venv/
+
+# Archivos de base de datos
+*.sqlite3
+db.sqlite3
+
+# Archivos de secretos
+.env
+
+# Archivos multimedia subidos por los usuarios
+media/
+
+# Archivos de caché de Python
+__pycache__/
+*.pyc
+
+# Archivos de configuración del editor
+.vscode/
