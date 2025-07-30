@@ -8,13 +8,13 @@ class TurnoForm(forms.ModelForm):
     class Meta:
         model = Turno
         fields = ['cliente', 'servicio', 'empleado', 'fecha_hora_inicio', 'estado']
-        
+
         widgets = {
             'fecha_hora_inicio': forms.DateTimeInput(
                 attrs={
                     'type': 'datetime-local', 
-                    'class': 'form-select',
-                    'step': '1800'  # <-- ESTA ES LA LÍNEA CLAVE
+                    'class': 'form-control',  # <-- CORREGIDO de 'form-select' a 'form-control'
+                    'step': '1800'
                 },
                 format='%Y-%m-%dT%H:%M'
             ),
