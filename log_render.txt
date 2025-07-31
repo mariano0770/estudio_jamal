@@ -1,221 +1,50 @@
-2025-07-29T14:00:50.544516452Z ==> Deploying...
-2025-07-29T14:01:36.086424843Z ==> Running 'gunicorn centro_estetica.wsgi'
-2025-07-29T14:01:38.885246622Z Traceback (most recent call last):
-2025-07-29T14:01:38.885366151Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/django/db/backends/postgresql/base.py", line 25, in <module>
-2025-07-29T14:01:38.885374082Z     import psycopg as Database
-2025-07-29T14:01:38.885377762Z ModuleNotFoundError: No module named 'psycopg'
-2025-07-29T14:01:38.885385083Z 
-2025-07-29T14:01:38.885389613Z During handling of the above exception, another exception occurred:
-2025-07-29T14:01:38.885392003Z 
-2025-07-29T14:01:38.885394613Z Traceback (most recent call last):
-2025-07-29T14:01:38.885501682Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/django/db/backends/postgresql/base.py", line 27, in <module>
-2025-07-29T14:01:38.885508182Z     import psycopg2 as Database
-2025-07-29T14:01:38.885511132Z ModuleNotFoundError: No module named 'psycopg2'
-2025-07-29T14:01:38.885514053Z 
-2025-07-29T14:01:38.885517943Z During handling of the above exception, another exception occurred:
-2025-07-29T14:01:38.885520543Z 
-2025-07-29T14:01:38.885523573Z Traceback (most recent call last):
-2025-07-29T14:01:38.888572179Z   File "/opt/render/project/src/.venv/bin/gunicorn", line 8, in <module>
-2025-07-29T14:01:38.88858262Z     sys.exit(run())
-2025-07-29T14:01:38.88858601Z              ~~~^^
-2025-07-29T14:01:38.88859166Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/gunicorn/app/wsgiapp.py", line 66, in run
-2025-07-29T14:01:38.888594751Z     WSGIApplication("%(prog)s [OPTIONS] [APP_MODULE]", prog=prog).run()
-2025-07-29T14:01:38.888597711Z     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
-2025-07-29T14:01:38.888600541Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/gunicorn/app/base.py", line 235, in run
-2025-07-29T14:01:38.888603331Z     super().run()
-2025-07-29T14:01:38.888606071Z     ~~~~~~~~~~~^^
-2025-07-29T14:01:38.888608652Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/gunicorn/app/base.py", line 71, in run
-2025-07-29T14:01:38.888611632Z     Arbiter(self).run()
-2025-07-29T14:01:38.888614422Z     ~~~~~~~^^^^^^
-2025-07-29T14:01:38.888617032Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/gunicorn/arbiter.py", line 57, in __init__
-2025-07-29T14:01:38.888619863Z     self.setup(app)
-2025-07-29T14:01:38.888622583Z     ~~~~~~~~~~^^^^^
-2025-07-29T14:01:38.888625313Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/gunicorn/arbiter.py", line 117, in setup
-2025-07-29T14:01:38.888628013Z     self.app.wsgi()
-2025-07-29T14:01:38.888630804Z     ~~~~~~~~~~~~~^^
-2025-07-29T14:01:38.888633524Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/gunicorn/app/base.py", line 66, in wsgi
-2025-07-29T14:01:38.888636574Z     self.callable = self.load()
-2025-07-29T14:01:38.888639414Z                     ~~~~~~~~~^^
-2025-07-29T14:01:38.888641974Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/gunicorn/app/wsgiapp.py", line 57, in load
-2025-07-29T14:01:38.888644754Z     return self.load_wsgiapp()
-2025-07-29T14:01:38.888647425Z            ~~~~~~~~~~~~~~~~~^^
-2025-07-29T14:01:38.888650475Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/gunicorn/app/wsgiapp.py", line 47, in load_wsgiapp
-2025-07-29T14:01:38.888653205Z     return util.import_app(self.app_uri)
-2025-07-29T14:01:38.888655835Z            ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
-2025-07-29T14:01:38.888657895Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/gunicorn/util.py", line 370, in import_app
-2025-07-29T14:01:38.888659956Z     mod = importlib.import_module(module)
-2025-07-29T14:01:38.888675027Z   File "/usr/local/lib/python3.13/importlib/__init__.py", line 88, in import_module
-2025-07-29T14:01:38.888679657Z     return _bootstrap._gcd_import(name[level:], package, level)
-2025-07-29T14:01:38.888682508Z            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-2025-07-29T14:01:38.888685568Z   File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
-2025-07-29T14:01:38.888701119Z   File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
-2025-07-29T14:01:38.888704149Z   File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
-2025-07-29T14:01:38.888706989Z   File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
-2025-07-29T14:01:38.88870969Z   File "<frozen importlib._bootstrap_external>", line 1026, in exec_module
-2025-07-29T14:01:38.8887126Z   File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
-2025-07-29T14:01:38.88871553Z   File "/opt/render/project/src/centro_estetica/wsgi.py", line 16, in <module>
-2025-07-29T14:01:38.8887186Z     application = get_wsgi_application()
-2025-07-29T14:01:38.888721451Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/django/core/wsgi.py", line 12, in get_wsgi_application
-2025-07-29T14:01:38.888724021Z     django.setup(set_prefix=False)
-2025-07-29T14:01:38.888726471Z     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
-2025-07-29T14:01:38.888732691Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/django/__init__.py", line 24, in setup
-2025-07-29T14:01:38.888735292Z     apps.populate(settings.INSTALLED_APPS)
-2025-07-29T14:01:38.888737882Z     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
-2025-07-29T14:01:38.888740402Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/django/apps/registry.py", line 116, in populate
-2025-07-29T14:01:38.888742882Z     app_config.import_models()
-2025-07-29T14:01:38.888745332Z     ~~~~~~~~~~~~~~~~~~~~~~~~^^
-2025-07-29T14:01:38.888747973Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/django/apps/config.py", line 269, in import_models
-2025-07-29T14:01:38.888750633Z     self.models_module = import_module(models_module_name)
-2025-07-29T14:01:38.888753123Z                          ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
-2025-07-29T14:01:38.888755683Z   File "/usr/local/lib/python3.13/importlib/__init__.py", line 88, in import_module
-2025-07-29T14:01:38.888758223Z     return _bootstrap._gcd_import(name[level:], package, level)
-2025-07-29T14:01:38.888760694Z            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-2025-07-29T14:01:38.888763294Z   File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
-2025-07-29T14:01:38.888766044Z   File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
-2025-07-29T14:01:38.888768734Z   File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
-2025-07-29T14:01:38.888771544Z   File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
-2025-07-29T14:01:38.888774464Z   File "<frozen importlib._bootstrap_external>", line 1026, in exec_module
-2025-07-29T14:01:38.888777425Z   File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
-2025-07-29T14:01:38.888780215Z   File "/opt/render/project/src/gestion/models.py", line 3, in <module>
-2025-07-29T14:01:38.888783115Z     from django.contrib.auth.models import User
-2025-07-29T14:01:38.888785945Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/django/contrib/auth/models.py", line 5, in <module>
-2025-07-29T14:01:38.888788726Z     from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
-2025-07-29T14:01:38.888791746Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/django/contrib/auth/base_user.py", line 43, in <module>
-2025-07-29T14:01:38.888800057Z     class AbstractBaseUser(models.Model):
-2025-07-29T14:01:38.888802997Z     ...<123 lines>...
-2025-07-29T14:01:38.888805697Z             )
-2025-07-29T14:01:38.888808637Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/django/db/models/base.py", line 145, in __new__
-2025-07-29T14:01:38.888811267Z     new_class.add_to_class("_meta", Options(meta, app_label))
-2025-07-29T14:01:38.888813747Z     ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-2025-07-29T14:01:38.888816258Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/django/db/models/base.py", line 373, in add_to_class
-2025-07-29T14:01:38.888818828Z     value.contribute_to_class(cls, name)
-2025-07-29T14:01:38.888821258Z     ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
-2025-07-29T14:01:38.888825259Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/django/db/models/options.py", line 238, in contribute_to_class
-2025-07-29T14:01:38.888827839Z     self.db_table, connection.ops.max_name_length()
-2025-07-29T14:01:38.888830479Z                    ^^^^^^^^^^^^^^
-2025-07-29T14:01:38.888833149Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/django/utils/connection.py", line 15, in __getattr__
-2025-07-29T14:01:38.888835799Z     return getattr(self._connections[self._alias], item)
-2025-07-29T14:01:38.888838429Z                    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
-2025-07-29T14:01:38.88884086Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/django/utils/connection.py", line 62, in __getitem__
-2025-07-29T14:01:38.88884359Z     conn = self.create_connection(alias)
-2025-07-29T14:01:38.88884647Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/django/db/utils.py", line 193, in create_connection
-2025-07-29T14:01:38.88884938Z     backend = load_backend(db["ENGINE"])
-2025-07-29T14:01:38.888852241Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/django/db/utils.py", line 113, in load_backend
-2025-07-29T14:01:38.888854661Z     return import_module("%s.base" % backend_name)
-2025-07-29T14:01:38.888870282Z   File "/usr/local/lib/python3.13/importlib/__init__.py", line 88, in import_module
-2025-07-29T14:01:38.888873412Z     return _bootstrap._gcd_import(name[level:], package, level)
-2025-07-29T14:01:38.888876372Z            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-2025-07-29T14:01:38.888879153Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/django/db/backends/postgresql/base.py", line 29, in <module>
-2025-07-29T14:01:38.888881793Z     raise ImproperlyConfigured("Error loading psycopg2 or psycopg module")
-2025-07-29T14:01:38.888892654Z django.core.exceptions.ImproperlyConfigured: Error loading psycopg2 or psycopg module
-2025-07-29T14:01:43.099579824Z ==> Exited with status 1
-2025-07-29T14:01:43.114006663Z ==> Common ways to troubleshoot your deploy: https://render.com/docs/troubleshooting-deploys
-2025-07-29T14:01:49.492490664Z ==> Running 'gunicorn centro_estetica.wsgi'
-2025-07-29T14:01:52.202023357Z Traceback (most recent call last):
-2025-07-29T14:01:52.202056629Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/django/db/backends/postgresql/base.py", line 25, in <module>
-2025-07-29T14:01:52.20206426Z     import psycopg as Database
-2025-07-29T14:01:52.20206919Z ModuleNotFoundError: No module named 'psycopg'
-2025-07-29T14:01:52.202074321Z 
-2025-07-29T14:01:52.202079301Z During handling of the above exception, another exception occurred:
-2025-07-29T14:01:52.202083372Z 
-2025-07-29T14:01:52.202087712Z Traceback (most recent call last):
-2025-07-29T14:01:52.202091922Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/django/db/backends/postgresql/base.py", line 27, in <module>
-2025-07-29T14:01:52.202096193Z     import psycopg2 as Database
-2025-07-29T14:01:52.202100493Z ModuleNotFoundError: No module named 'psycopg2'
-2025-07-29T14:01:52.202104343Z 
-2025-07-29T14:01:52.202108974Z During handling of the above exception, another exception occurred:
-2025-07-29T14:01:52.202113054Z 
-2025-07-29T14:01:52.202117244Z Traceback (most recent call last):
-2025-07-29T14:01:52.207030844Z   File "/opt/render/project/src/.venv/bin/gunicorn", line 8, in <module>
-2025-07-29T14:01:52.207054166Z     sys.exit(run())
-2025-07-29T14:01:52.207060066Z              ~~~^^
-2025-07-29T14:01:52.207115391Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/gunicorn/app/wsgiapp.py", line 66, in run
-2025-07-29T14:01:52.207121871Z     WSGIApplication("%(prog)s [OPTIONS] [APP_MODULE]", prog=prog).run()
-2025-07-29T14:01:52.207127252Z     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
-2025-07-29T14:01:52.207132692Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/gunicorn/app/base.py", line 235, in run
-2025-07-29T14:01:52.207137932Z     super().run()
-2025-07-29T14:01:52.207142613Z     ~~~~~~~~~~~^^
-2025-07-29T14:01:52.207147943Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/gunicorn/app/base.py", line 71, in run
-2025-07-29T14:01:52.207153223Z     Arbiter(self).run()
-2025-07-29T14:01:52.207158114Z     ~~~~~~~^^^^^^
-2025-07-29T14:01:52.207163154Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/gunicorn/arbiter.py", line 57, in __init__
-2025-07-29T14:01:52.207167984Z     self.setup(app)
-2025-07-29T14:01:52.207172665Z     ~~~~~~~~~~^^^^^
-2025-07-29T14:01:52.207204237Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/gunicorn/arbiter.py", line 117, in setup
-2025-07-29T14:01:52.207209178Z     self.app.wsgi()
-2025-07-29T14:01:52.207213478Z     ~~~~~~~~~~~~~^^
-2025-07-29T14:01:52.207217788Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/gunicorn/app/base.py", line 66, in wsgi
-2025-07-29T14:01:52.207222839Z     self.callable = self.load()
-2025-07-29T14:01:52.207226979Z                     ~~~~~~~~~^^
-2025-07-29T14:01:52.20723154Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/gunicorn/app/wsgiapp.py", line 57, in load
-2025-07-29T14:01:52.20723628Z     return self.load_wsgiapp()
-2025-07-29T14:01:52.20724048Z            ~~~~~~~~~~~~~~~~~^^
-2025-07-29T14:01:52.20724549Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/gunicorn/app/wsgiapp.py", line 47, in load_wsgiapp
-2025-07-29T14:01:52.207250351Z     return util.import_app(self.app_uri)
-2025-07-29T14:01:52.207254541Z            ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
-2025-07-29T14:01:52.207258852Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/gunicorn/util.py", line 370, in import_app
-2025-07-29T14:01:52.207282473Z     mod = importlib.import_module(module)
-2025-07-29T14:01:52.207305305Z   File "/usr/local/lib/python3.13/importlib/__init__.py", line 88, in import_module
-2025-07-29T14:01:52.207308926Z     return _bootstrap._gcd_import(name[level:], package, level)
-2025-07-29T14:01:52.207315506Z            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-2025-07-29T14:01:52.207318126Z   File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
-2025-07-29T14:01:52.207320796Z   File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
-2025-07-29T14:01:52.207323347Z   File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
-2025-07-29T14:01:52.207325937Z   File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
-2025-07-29T14:01:52.207328537Z   File "<frozen importlib._bootstrap_external>", line 1026, in exec_module
-2025-07-29T14:01:52.207331207Z   File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
-2025-07-29T14:01:52.207333677Z   File "/opt/render/project/src/centro_estetica/wsgi.py", line 16, in <module>
-2025-07-29T14:01:52.207336208Z     application = get_wsgi_application()
-2025-07-29T14:01:52.207338768Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/django/core/wsgi.py", line 12, in get_wsgi_application
-2025-07-29T14:01:52.207341508Z     django.setup(set_prefix=False)
-2025-07-29T14:01:52.207344218Z     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
-2025-07-29T14:01:52.20736768Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/django/__init__.py", line 24, in setup
-2025-07-29T14:01:52.20737177Z     apps.populate(settings.INSTALLED_APPS)
-2025-07-29T14:01:52.207374711Z     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
-2025-07-29T14:01:52.207377411Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/django/apps/registry.py", line 116, in populate
-2025-07-29T14:01:52.207380201Z     app_config.import_models()
-2025-07-29T14:01:52.207382661Z     ~~~~~~~~~~~~~~~~~~~~~~~~^^
-2025-07-29T14:01:52.207385511Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/django/apps/config.py", line 269, in import_models
-2025-07-29T14:01:52.207388472Z     self.models_module = import_module(models_module_name)
-2025-07-29T14:01:52.207391052Z                          ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
-2025-07-29T14:01:52.207393892Z   File "/usr/local/lib/python3.13/importlib/__init__.py", line 88, in import_module
-2025-07-29T14:01:52.207396322Z     return _bootstrap._gcd_import(name[level:], package, level)
-2025-07-29T14:01:52.207398982Z            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-2025-07-29T14:01:52.207401503Z   File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
-2025-07-29T14:01:52.207404303Z   File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
-2025-07-29T14:01:52.207406853Z   File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
-2025-07-29T14:01:52.207409543Z   File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
-2025-07-29T14:01:52.207412174Z   File "<frozen importlib._bootstrap_external>", line 1026, in exec_module
-2025-07-29T14:01:52.207417764Z   File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
-2025-07-29T14:01:52.207421084Z   File "/opt/render/project/src/gestion/models.py", line 3, in <module>
-2025-07-29T14:01:52.207423714Z     from django.contrib.auth.models import User
-2025-07-29T14:01:52.207453187Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/django/contrib/auth/models.py", line 5, in <module>
-2025-07-29T14:01:52.207456537Z     from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
-2025-07-29T14:01:52.207459367Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/django/contrib/auth/base_user.py", line 43, in <module>
-2025-07-29T14:01:52.207467868Z     class AbstractBaseUser(models.Model):
-2025-07-29T14:01:52.207470598Z     ...<123 lines>...
-2025-07-29T14:01:52.207473648Z             )
-2025-07-29T14:01:52.207476188Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/django/db/models/base.py", line 145, in __new__
-2025-07-29T14:01:52.207479019Z     new_class.add_to_class("_meta", Options(meta, app_label))
-2025-07-29T14:01:52.207481389Z     ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-2025-07-29T14:01:52.207483999Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/django/db/models/base.py", line 373, in add_to_class
-2025-07-29T14:01:52.207486509Z     value.contribute_to_class(cls, name)
-2025-07-29T14:01:52.207537283Z     ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
-2025-07-29T14:01:52.207542113Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/django/db/models/options.py", line 238, in contribute_to_class
-2025-07-29T14:01:52.207544934Z     self.db_table, connection.ops.max_name_length()
-2025-07-29T14:01:52.207547344Z                    ^^^^^^^^^^^^^^
-2025-07-29T14:01:52.207549924Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/django/utils/connection.py", line 15, in __getattr__
-2025-07-29T14:01:52.207552864Z     return getattr(self._connections[self._alias], item)
-2025-07-29T14:01:52.207555605Z                    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
-2025-07-29T14:01:52.207558515Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/django/utils/connection.py", line 62, in __getitem__
-2025-07-29T14:01:52.207561305Z     conn = self.create_connection(alias)
-2025-07-29T14:01:52.207563955Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/django/db/utils.py", line 193, in create_connection
-2025-07-29T14:01:52.207566825Z     backend = load_backend(db["ENGINE"])
-2025-07-29T14:01:52.207569335Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/django/db/utils.py", line 113, in load_backend
-2025-07-29T14:01:52.207571906Z     return import_module("%s.base" % backend_name)
-2025-07-29T14:01:52.207574756Z   File "/usr/local/lib/python3.13/importlib/__init__.py", line 88, in import_module
-2025-07-29T14:01:52.207577336Z     return _bootstrap._gcd_import(name[level:], package, level)
-2025-07-29T14:01:52.207579986Z            ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-2025-07-29T14:01:52.207582376Z   File "/opt/render/project/src/.venv/lib/python3.13/site-packages/django/db/backends/postgresql/base.py", line 29, in <module>
-2025-07-29T14:01:52.207587487Z     raise ImproperlyConfigured("Error loading psycopg2 or psycopg module")
-2025-07-29T14:01:52.207590207Z django.core.exceptions.ImproperlyConfigured: Error loading psycopg2 or psycopg module
+2025-07-31T11:01:52.860647331Z 127.0.0.1 - - [31/Jul/2025:08:01:52 -0300] "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 304 0 "https://estudio-jamal.onrender.com/admin/auth/user/4/change/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:01:52.861157974Z 127.0.0.1 - - [31/Jul/2025:08:01:52 -0300] "GET /static/admin/js/urlify.js HTTP/1.1" 304 0 "https://estudio-jamal.onrender.com/admin/auth/user/4/change/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:01:52.86183567Z 127.0.0.1 - - [31/Jul/2025:08:01:52 -0300] "GET /static/admin/js/prepopulate.js HTTP/1.1" 304 0 "https://estudio-jamal.onrender.com/admin/auth/user/4/change/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:01:52.862355434Z 127.0.0.1 - - [31/Jul/2025:08:01:52 -0300] "GET /static/admin/js/vendor/xregexp/xregexp.min.js HTTP/1.1" 304 0 "https://estudio-jamal.onrender.com/admin/auth/user/4/change/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:01:52.863159124Z 127.0.0.1 - - [31/Jul/2025:08:01:52 -0300] "GET /static/admin/js/actions.js HTTP/1.1" 304 0 "https://estudio-jamal.onrender.com/admin/auth/user/4/change/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:01:52.863710028Z 127.0.0.1 - - [31/Jul/2025:08:01:52 -0300] "GET /static/admin/js/vendor/jquery/jquery.min.js HTTP/1.1" 304 0 "https://estudio-jamal.onrender.com/admin/auth/user/4/change/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:01:52.86421282Z 127.0.0.1 - - [31/Jul/2025:08:01:52 -0300] "GET /static/admin/css/responsive.css HTTP/1.1" 304 0 "https://estudio-jamal.onrender.com/admin/auth/user/4/change/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:01:52.870029846Z 127.0.0.1 - - [31/Jul/2025:08:01:52 -0300] "GET /static/admin/js/jquery.init.js HTTP/1.1" 304 0 "https://estudio-jamal.onrender.com/admin/auth/user/4/change/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:01:53.070564229Z 127.0.0.1 - - [31/Jul/2025:08:01:53 -0300] "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 304 0 "https://estudio-jamal.onrender.com/admin/auth/user/4/change/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:01:53.071247875Z 127.0.0.1 - - [31/Jul/2025:08:01:53 -0300] "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0 "https://estudio-jamal.onrender.com/admin/auth/user/4/change/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:01:53.208900154Z 127.0.0.1 - - [31/Jul/2025:08:01:53 -0300] "GET /static/admin/img/icon-yes.svg HTTP/1.1" 304 0 "https://estudio-jamal.onrender.com/static/admin/css/base.css" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:01:53.438733831Z 127.0.0.1 - - [31/Jul/2025:08:01:53 -0300] "GET /static/admin/img/search.svg HTTP/1.1" 304 0 "https://estudio-jamal.onrender.com/static/admin/css/widgets.css" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:01:57.225607215Z 127.0.0.1 - - [31/Jul/2025:08:01:57 -0300] "GET /admin/auth/group/ HTTP/1.1" 200 15430 "https://estudio-jamal.onrender.com/admin/auth/user/4/change/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:01:57.459089637Z 127.0.0.1 - - [31/Jul/2025:08:01:57 -0300] "GET /admin/jsi18n/ HTTP/1.1" 200 3342 "https://estudio-jamal.onrender.com/admin/auth/group/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:01:57.460080842Z 127.0.0.1 - - [31/Jul/2025:08:01:57 -0300] "GET /static/admin/css/changelists.css HTTP/1.1" 304 0 "https://estudio-jamal.onrender.com/admin/auth/group/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:01:57.659287655Z 127.0.0.1 - - [31/Jul/2025:08:01:57 -0300] "GET /static/admin/js/filters.js HTTP/1.1" 304 0 "https://estudio-jamal.onrender.com/admin/auth/group/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:02:08.546042601Z 127.0.0.1 - - [31/Jul/2025:08:02:08 -0300] "POST /logout/ HTTP/1.1" 302 0 "https://estudio-jamal.onrender.com/reportes/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:02:08.751867828Z 127.0.0.1 - - [31/Jul/2025:08:02:08 -0300] "GET /login/ HTTP/1.1" 200 5379 "https://estudio-jamal.onrender.com/reportes/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:02:18.530922145Z 127.0.0.1 - - [31/Jul/2025:08:02:18 -0300] "POST /login/ HTTP/1.1" 302 0 "https://estudio-jamal.onrender.com/login/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:02:18.78842199Z 127.0.0.1 - - [31/Jul/2025:08:02:18 -0300] "GET /turnos/ HTTP/1.1" 200 6379 "https://estudio-jamal.onrender.com/login/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:02:19.1045455Z 127.0.0.1 - - [31/Jul/2025:08:02:19 -0300] "GET /api/turnos/?start=2025-07-27T00%3A00%3A00-03%3A00&end=2025-08-03T00%3A00%3A00-03%3A00 HTTP/1.1" 200 124 "https://estudio-jamal.onrender.com/turnos/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:02:26.020032306Z 127.0.0.1 - - [31/Jul/2025:08:02:26 -0300] "POST /api/turnos/update/ HTTP/1.1" 200 16 "https://estudio-jamal.onrender.com/turnos/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:02:32.503044803Z 127.0.0.1 - - [31/Jul/2025:08:02:32 -0300] "GET /turnos/ HTTP/1.1" 200 6681 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:02:32.907557267Z 127.0.0.1 - - [31/Jul/2025:08:02:32 -0300] "GET /api/turnos/?start=2025-07-27T00%3A00%3A00-03%3A00&end=2025-08-03T00%3A00%3A00-03%3A00 HTTP/1.1" 200 124 "https://estudio-jamal.onrender.com/turnos/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:02:49.758657591Z 127.0.0.1 - - [31/Jul/2025:08:02:49 -0300] "GET /clientes/ HTTP/1.1" 200 3908 "https://estudio-jamal.onrender.com/turnos/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:02:51.314025897Z 127.0.0.1 - - [31/Jul/2025:08:02:51 -0300] "GET /clientes/nuevo/ HTTP/1.1" 200 5707 "https://estudio-jamal.onrender.com/clientes/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:02:56.380459028Z 127.0.0.1 - - [31/Jul/2025:08:02:56 -0300] "GET / HTTP/1.1" 302 0 "https://estudio-jamal.onrender.com/clientes/nuevo/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:02:56.623732009Z 127.0.0.1 - - [31/Jul/2025:08:02:56 -0300] "GET /login/?next=/ HTTP/1.1" 200 5790 "https://estudio-jamal.onrender.com/clientes/nuevo/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:02:57.726848285Z 127.0.0.1 - - [31/Jul/2025:08:02:57 -0300] "GET /clientes/ HTTP/1.1" 200 3908 "https://estudio-jamal.onrender.com/login/?next=/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:03:00.596076022Z 127.0.0.1 - - [31/Jul/2025:08:03:00 -0300] "GET / HTTP/1.1" 302 0 "https://estudio-jamal.onrender.com/clientes/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:03:00.848423707Z 127.0.0.1 - - [31/Jul/2025:08:03:00 -0300] "GET /login/?next=/ HTTP/1.1" 200 5790 "https://estudio-jamal.onrender.com/clientes/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:03:03.76130401Z 127.0.0.1 - - [31/Jul/2025:08:03:03 -0300] "GET / HTTP/1.1" 302 0 "https://estudio-jamal.onrender.com/login/?next=/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:03:03.982191651Z 127.0.0.1 - - [31/Jul/2025:08:03:03 -0300] "GET /login/?next=/ HTTP/1.1" 200 5790 "https://estudio-jamal.onrender.com/login/?next=/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:03:06.383690398Z 127.0.0.1 - - [31/Jul/2025:08:03:06 -0300] "GET / HTTP/1.1" 302 0 "https://estudio-jamal.onrender.com/login/?next=/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:03:06.603047232Z 127.0.0.1 - - [31/Jul/2025:08:03:06 -0300] "GET /login/?next=/ HTTP/1.1" 200 5790 "https://estudio-jamal.onrender.com/login/?next=/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:03:08.512903448Z 127.0.0.1 - - [31/Jul/2025:08:03:08 -0300] "GET /turnos/ HTTP/1.1" 200 6681 "https://estudio-jamal.onrender.com/login/?next=/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:03:08.769270742Z 127.0.0.1 - - [31/Jul/2025:08:03:08 -0300] "GET /api/turnos/?start=2025-07-27T00%3A00%3A00-03%3A00&end=2025-08-03T00%3A00%3A00-03%3A00 HTTP/1.1" 200 124 "https://estudio-jamal.onrender.com/turnos/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:03:09.952852152Z 127.0.0.1 - - [31/Jul/2025:08:03:09 -0300] "POST /logout/ HTTP/1.1" 302 0 "https://estudio-jamal.onrender.com/turnos/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:03:10.188738618Z 127.0.0.1 - - [31/Jul/2025:08:03:10 -0300] "GET /login/ HTTP/1.1" 200 5379 "https://estudio-jamal.onrender.com/turnos/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:03:29.395920938Z 127.0.0.1 - - [31/Jul/2025:08:03:29 -0300] "POST /login/ HTTP/1.1" 302 0 "https://estudio-jamal.onrender.com/login/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:03:29.686470588Z 127.0.0.1 - - [31/Jul/2025:08:03:29 -0300] "GET /turnos/ HTTP/1.1" 200 8174 "https://estudio-jamal.onrender.com/login/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:03:29.975666083Z 127.0.0.1 - - [31/Jul/2025:08:03:29 -0300] "GET /api/turnos/?start=2025-07-27T00%3A00%3A00-03%3A00&end=2025-08-03T00%3A00%3A00-03%3A00 HTTP/1.1" 200 124 "https://estudio-jamal.onrender.com/turnos/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:03:37.0065819Z 127.0.0.1 - - [31/Jul/2025:08:03:37 -0300] "GET /empleados/ HTTP/1.1" 200 5206 "https://estudio-jamal.onrender.com/turnos/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:03:38.490254094Z 127.0.0.1 - - [31/Jul/2025:08:03:38 -0300] "GET /empleados/nuevo/ HTTP/1.1" 200 7059 "https://estudio-jamal.onrender.com/empleados/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:04:10.706233508Z 127.0.0.1 - - [31/Jul/2025:08:04:10 -0300] "POST /empleados/nuevo/ HTTP/1.1" 500 145 "https://estudio-jamal.onrender.com/empleados/nuevo/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:08:45.379658522Z 127.0.0.1 - - [31/Jul/2025:08:08:45 -0300] "GET /empleados/nuevo/ HTTP/1.1" 200 7059 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:09:18.101404291Z 127.0.0.1 - - [31/Jul/2025:08:09:18 -0300] "POST /empleados/nuevo/ HTTP/1.1" 500 145 "https://estudio-jamal.onrender.com/empleados/nuevo/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
+2025-07-31T11:25:17.345998074Z [2025-07-31 08:25:17 -0300] [86] [INFO] Handling signal: term
+2025-07-31T11:25:17.361434369Z [2025-07-31 08:25:17 -0300] [87] [INFO] Worker exiting (pid: 87)
+2025-07-31T11:25:18.592740806Z [2025-07-31 08:25:18 -0300] [86] [INFO] Shutting down: Master

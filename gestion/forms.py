@@ -2,7 +2,7 @@
 from django import forms
 from django.contrib.auth.models import User, Group
 from .models import Turno, Cliente, Abono, Configuracion, Servicio, Empleado, Producto, Plan
-
+from django.db import transaction
 
 class TurnoForm(forms.ModelForm):
     class Meta:
@@ -109,8 +109,9 @@ class RegistroEmpleadoForm(forms.ModelForm):
             'puesto': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
+    @transaction.atomic
     def save(self, commit=True):
-        # Este método save personalizado se encarga de crear los dos objetos
+        # Usamos transaction.atomic para asegurar que todo se ejecute correctamente
 
         # Primero, creamos el objeto User
         user = User.objects.create_user(
@@ -122,11 +123,15 @@ class RegistroEmpleadoForm(forms.ModelForm):
         )
 
         # Lo asignamos al grupo "Empleado"
-        from django.contrib.auth.models import Group
-        grupo_empleado = Group.objects.get(name='Empleado')
-        user.groups.add(grupo_empleado)
+        try:
+            grupo_empleado = Group.objects.get(name='Empleado')
+            user.groups.add(grupo_empleado)
+        except Group.DoesNotExist:
+            # Si el grupo no existe, podemos ignorarlo o manejar el error
+            # Por ahora, lo ignoramos para que el registro no falle por esto.
+            pass
 
-        # Ahora, obtenemos la instancia del Empleado del formulario
+        # Ahora, obtenemos la instancia del Empleado del formulario, pero no la guardamos aún
         empleado = super().save(commit=False)
         # Vinculamos el User que acabamos de crear
         empleado.user = user
