@@ -1,0 +1,718 @@
+Error de integridad en /empleados/nuevo/
+El valor de clave duplicado viola la restricción única "auth_user_username_key"
+DETALLE: Clave (usuario)=(JORGE) ya existe.
+Método de solicitud:	CORREO
+URL de solicitud:	https://estudio-jamal.onrender.com/empleados/nuevo/
+Versión de Django:	5.2.4
+Tipo de excepción:	Error de integridad
+Valor de excepción:	
+El valor de clave duplicado viola la restricción única "auth_user_username_key"
+DETALLE: Clave (usuario)=(JORGE) ya existe.
+Ubicación de excepción:	/opt/render/project/src/.venv/lib/python3.13/site-packages/django/db/backends/utils.py , línea 105, en _execute
+Criado durante:	gestion.views.registrar_empleado
+Ejecutable de Python:	/opt/render/proyecto/src/.venv/bin/python
+Versión de Python:	3.13.4
+Ruta de Python:	
+['/opt/render/project/src',
+ '/opt/render/project/src/.venv/bin',
+ '/usr/local/lib/python313.zip',
+ '/usr/local/lib/python3.13',
+ '/usr/local/lib/python3.13/lib-dynload',
+ '/opt/render/project/src/.venv/lib/python3.13/site-packages']
+Hora del servidor:	Jueves, 31 de julio de 2025 09:25:55 -0300
+Rastreo Cambiar a la vista de copiar y pegar
+/opt/render/project/src/.venv/lib/python3.13/site-packages/django/db/backends/utils.py, línea 105, en _execute
+                devolver self.cursor.execute(sql, parámetros)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Variables locales
+La excepción anterior (valor de clave duplicado viola la restricción única "auth_user_username_key" DETALLE: La clave (nombre de usuario)=(JORGE) ya existe) fue la causa directa de la siguiente excepción:
+/opt/render/project/src/.venv/lib/python3.13/site-packages/django/core/handlers/exception.py, línea 55, en el interior
+                respuesta = obtener_respuesta(solicitud)
+                               ^^^^^^^^^^^^^^^^^^^^^ …
+Variables locales
+/opt/render/project/src/.venv/lib/python3.13/site-packages/django/core/handlers/base.py, línea 197, en _get_response
+                respuesta = devolución_de_llamada_envuelta(solicitud, *argumentos_de_devolución_de_llamada, **kwargs_devolución_de_llamada)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Variables locales
+/opt/render/project/src/.venv/lib/python3.13/site-packages/django/contrib/auth/decorators.py, línea 59, en _view_wrapper
+                    devolver view_func(solicitud, *args, **kwargs)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Variables locales
+/opt/render/project/src/.venv/lib/python3.13/site-packages/django/contrib/auth/decorators.py, línea 59, en _view_wrapper
+                    devolver view_func(solicitud, *args, **kwargs)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Variables locales
+/opt/render/project/src/gestion/views.py, línea 489, en registrador_empleado
+            formulario.guardar()
+                 ^^^^^^^^^^^ …
+Variables locales
+/usr/local/lib/python3.13/contextlib.py, línea 85, en el interior
+                devolver func(*args, **kwds)
+                           ^^^^^^^^^^^^^^^^^^^ …
+Variables locales
+/opt/render/project/src/gestion/forms.py, línea 117, en guardar
+        usuario = Usuario.objects.create_user(
+                     …
+Variables locales
+/opt/render/project/src/.venv/lib/python3.13/site-packages/django/contrib/auth/models.py, línea 175, en create_user
+        devuelve self._create_user(nombre de usuario, correo electrónico, contraseña, **campos_extra)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Variables locales
+/opt/render/project/src/.venv/lib/python3.13/site-packages/django/contrib/auth/models.py, línea 163, en _create_user
+        usuario.guardar(usando=self._db)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Variables locales
+/opt/render/project/src/.venv/lib/python3.13/site-packages/django/contrib/auth/base_user.py, línea 65, en guardar
+        super().save(*args, **kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Variables locales
+/opt/render/project/src/.venv/lib/python3.13/site-packages/django/db/models/base.py, línea 902, en guardar
+        auto.guardar_base(
+             ^ …
+Variables locales
+/opt/render/project/src/.venv/lib/python3.13/site-packages/django/db/models/base.py, línea 1008, en save_base
+            actualizado = self._save_table(
+                             …
+Variables locales
+/opt/render/project/src/.venv/lib/python3.13/site-packages/django/db/models/base.py, línea 1169, en _save_table
+            resultados = self._do_insert(
+                             …
+Variables locales
+/opt/render/project/src/.venv/lib/python3.13/site-packages/django/db/models/base.py, línea 1210, en _do_insert
+        administrador de retorno._insert(
+                      …
+Variables locales
+/opt/render/project/src/.venv/lib/python3.13/site-packages/django/db/models/manager.py, línea 87, en manager_method
+                devuelve getattr(self.get_queryset(), nombre)(*args, **kwargs)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Variables locales
+/opt/render/project/src/.venv/lib/python3.13/site-packages/django/db/models/query.py, línea 1868, en _insert
+        devolver consulta.get_compiler(using=using).execute_sql(devolviendo_campos)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Variables locales
+/opt/render/project/src/.venv/lib/python3.13/site-packages/django/db/models/sql/compiler.py, línea 1882, en execute_sql
+                cursor.execute(sql, parámetros)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Variables locales
+/opt/render/project/src/.venv/lib/python3.13/site-packages/django/db/backends/utils.py, línea 122, en ejecución
+            devolver super().execute(sql, parámetros)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Variables locales
+/opt/render/project/src/.venv/lib/python3.13/site-packages/django/db/backends/utils.py, línea 79, en ejecución
+        devuelve self._execute_with_wrappers(
+                    …
+Variables locales
+/opt/render/project/src/.venv/lib/python3.13/site-packages/django/db/backends/utils.py, línea 92, en _execute_with_wrappers
+        devuelve ejecutor(sql, parámetros, muchos, contexto)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Variables locales
+/opt/render/project/src/.venv/lib/python3.13/site-packages/django/db/backends/utils.py, línea 100, en _execute
+        con self.db.wrap_database_errors:
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Variables locales
+/opt/render/project/src/.venv/lib/python3.13/site-packages/django/db/utils.py, línea 91, en __exit__
+                elevar dj_exc_value.with_traceback(traceback) desde exc_value
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Variables locales
+/opt/render/project/src/.venv/lib/python3.13/site-packages/django/db/backends/utils.py, línea 105, en _execute
+                devolver self.cursor.execute(sql, parámetros)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Variables locales
+Solicitar información
+USUARIO
+Cecilia
+
+CONSEGUIR
+No hay datos GET
+
+CORREO
+Variable	Valor
+token de middleware csrf	
+'5yEupdNM2Pg3yhq0FZ2oha1ye5ojjxaS7PYnWH54ZVZoOdEF10Zx1FhQoSyt1nBm'
+nombre de usuario	
+'JORGE'
+contraseña	
+'prueba123'
+nombre	
+'JORGE'
+Apellido	
+'PÉREZ'
+correo electrónico	
+'jorgeperez@gmail.com'
+puesto	
+'EMPLEADO'
+ARCHIVOS
+No hay datos de ARCHIVOS
+
+GALLETAS
+Variable	Valor
+token CSRF	
+'********************'
+id de sesión	
+'********************'
+META
+Variable	Valor
+LONGITUD DEL CONTENIDO	
+'191'
+TIPO DE CONTENIDO	
+'application/x-www-form-urlencoded'
+Cookie CSRF	
+'cru3HEss7gTvq6oPwb7jUFqskXkkS0BE'
+HTTP_ACEPTAR	
+'texto/html,aplicación/xhtml+xml,aplicación/xml;q=0.9,imagen/avif,imagen/webp,imagen/apng,*/*;q=0.8,aplicación/intercambio-firmado;v=b3;q=0.7'
+CODIFICACIÓN HTTP_ACCEPT	
+'gzip, br'
+IDIOMA DE ACEPTACIÓN HTTP	
+'es-ES,es;q=0.9'
+CONTROL DE CACHÉ HTTP	
+'edad máxima=0'
+Bucle HTTP_CDN	
+'cloudflare; bucles=1'
+IP DE CONEXIÓN HTTP_CF	
+'181.16.126.132'
+HTTP_CF_IPCOUNTRY	
+'ARKANSAS'
+HTTP_CF_RAY	
+'967d14bec85c1e82-EZE'
+VISITANTE HTTP_CF	
+'{"esquema":"https"}'
+Cookie HTTP	
+'********************'
+Host HTTP	
+'estudio-jamal.onrender.com'
+ORIGEN HTTP	
+'https://estudio-jamal.onrender.com'
+PRIORIDAD HTTP	
+'u=0, i'
+Referencia HTTP	
+'https://estudio-jamal.onrender.com/empleados/nuevo/'
+PROXY DE RENDERIZACIÓN HTTP TTL	
+'4'
+ID de RNDR HTTP	
+'171452db-d82d-4f6d'
+HTTP_SEC_CH_UA	
+'"No es una marca";v="8", "Chromium";v="138", "Google Chrome";v="138"'
+HTTP_SEC_CH_UA_MÓVIL	
+'?0'
+Plataforma HTTP_SEC_CH_UA	
+'"Ventanas"'
+HTTP_SEC_FETCH_DEST	
+'documento'
+MODO DE RECUPERACIÓN HTTP_SEC	
+'navegar por'
+SITIO DE OBTENCIÓN DE SEC. HTTP	
+'mismo origen'
+HTTP_SEC_OBTENER_USUARIO	
+'?1'
+IP_DE_CLIENTE_VERDADERA_HTTP	
+'181.16.126.132'
+SOLICITUDES DE ACTUALIZACIÓN HTTP INSEGURAS	
+'1'
+AGENTE DE USUARIO HTTP	
+('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, como '
+ 'Gecko) Chrome/138.0.0.0 Safari/537.36')
+HTTP_X_REENVIADO_PARA	
+'181.16.126.132, 198.41.230.174, 10.229.227.66'
+PROTOCOLO REENVIADO HTTP_X	
+'https'
+INICIO DE SOLICITUD HTTP_X	
+'1753964753857052'
+INFORMACIÓN DE RUTA	
+'/empleados/nuevos/'
+CADENA DE CONSULTA	
+"
+URI_RAW	
+'/empleados/nuevos/'
+DIRECCIÓN_REMOTA	
+'127.0.0.1'
+PUERTO_REMOTO	
+'36694'
+MÉTODO DE SOLICITUD	
+'CORREO'
+NOMBRE DEL GUIÓN	
+"
+NOMBRE DEL SERVIDOR	
+'0.0.0.0'
+PUERTO_SERVIDOR	
+'10000'
+PROTOCOLO_SERVIDOR	
+'HTTP/1.1'
+SOFTWARE DE SERVIDOR	
+'gunicornio/23.0.0'
+gunicorn.socket	
+<socket.socket fd=3, familia=2, tipo=1, proto=0, laddr=('127.0.0.1', 10000), raddr=('127.0.0.1', 36694)>
+errores wsgi	
+<objeto gunicorn.http.wsgi.WSGIErrorsWrapper en 0x79ead475e920>
+wsgi.file_wrapper	
+<clase 'gunicorn.http.wsgi.FileWrapper'>
+wsgi.input	
+<objeto gunicorn.http.body.Body en 0x79ead3e73e90>
+wsgi.input_terminated	
+Verdadero
+wsgi.multiproceso	
+FALSO
+wsgi.multihilo	
+FALSO
+wsgi.run_once	
+FALSO
+esquema_url_wsgi	
+'https'
+wsgi.versión	
+(1, 0)
+Ajustes
+Uso del módulo de configuracióncentro_estetica.settings
+Configuración	Valor
+ANULACIONES DE URL ABSOLUTAS	
+{}
+ADMINISTRADORES	
+[]
+HOSTALES PERMITIDOS	
+['estudio-jamal.onrender.com']
+APEND_SLASH	
+Verdadero
+BACKENDS DE AUTENTICACIÓN	
+'********************'
+VALIDADORES DE CONTRASEÑA DE AUTORIZACIÓN	
+'********************'
+MODELO DE USUARIO DE AUTORIZACIÓN	
+'********************'
+DIRECTORIO_BASE	
+PosixPath('/opt/render/proyecto/src')
+CACHÉS	
+{'predeterminado': {'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'}}
+ALIAS DE MIDDLEWARE DE CACHÉ	
+'por defecto'
+PREFIJO DE CLAVE DE MIDDLEWARE DE CACHÉ	
+'********************'
+SEGUNDOS DE CACHÉ_MIDDLEWARE	
+600
+Edad de las cookies CSRF	
+31449600
+DOMINIO DE COOKIES CSRF	
+Ninguno
+CSRF_COOKIE_HTTPONLY	
+FALSO
+NOMBRE DE COOKIE CSRF	
+'csrftoken'
+RUTA DE COOKIES CSRF	
+'/'
+CSRF_COOKIE_MISMO SITIO	
+'Flojo'
+CSRF_COOKIE_SEGURA	
+FALSO
+VISTA DE FALLOS DE CSRF	
+'django.views.csrf.csrf_failure'
+NOMBRE DEL ENCABEZADO CSRF	
+'HTTP_X_CSRFTOKEN'
+Orígenes de confianza CSRF	
+[]
+SESIONES DE USO DE CSRF	
+FALSO
+BASES DE DATOS	
+{'predeterminado': {'SOLICITUDES_ATOMICAS': Falso,
+             'AUTOCOMMIT': Verdadero,
+             'CONN_HEALTH_CHECKS': Falso,
+             'EDAD MÁXIMA DE CONEXIÓN': 0,
+             'DESHABILITAR_CURSORES_LATERAL_DEL_SERVIDOR': Falso,
+             'MOTOR': 'django.db.backends.postgresql',
+             'HOST': 'dpg-d23m6im3jp1c73a2ug50-a',
+             'NOMBRE': 'jamal_sty5',
+             'OPCIONES': {},
+             'CONTRASEÑA': '********************',
+             'PUERTO': '',
+             'TEST': {'CHARSET': Ninguno,
+                      'COLLATION': Ninguno,
+                      'MIGRAR': Cierto,
+                      'ESPEJO': Ninguno,
+                      'NOMBRE': Ninguno},
+             'ZONA HORARIA': Ninguna,
+             'USUARIO': 'jamal_sty5_user'
+ENRUTADORES DE BASE DE DATOS	
+[]
+TAMAÑO MÁXIMO DE MEMORIA DE CARGA DE DATOS	
+2621440
+NÚMERO MÁXIMO DE CAMPOS DE CARGA DE DATOS	
+1000
+CARGA DE DATOS NÚMERO MÁXIMO DE ARCHIVOS	
+100
+FORMATO DE FECHA Y HORA	
+'N j, Y, P'
+FORMATOS DE ENTRADA DE FECHA Y HORA	
+['%Y-%m-%d %H:%M:%S',
+ '%Y-%m-%d %H:%M:%S.%f',
+ '%Y-%m-%d %H:%M',
+ '%m/%d/%Y %H:%M:%S',
+ '%m/%d/%Y %H:%M:%S.%f',
+ '%m/%d/%Y %H:%M',
+ '%m/%d/%y %H:%M:%S',
+ '%m/%d/%y %H:%M:%S.%f',
+ '%m/%d/%y %H:%M']
+FORMATO DE FECHA	
+'N j, Y'
+FORMATOS DE ENTRADA DE FECHA	
+['%Y-%m-%d',
+ '%m/%d/%Y',
+ '%m/%d/%y',
+ '%b %d %Y',
+ '%b %d, %Y',
+ '%d %b %Y',
+ '%d %b, %Y',
+ '%B %d %Y',
+ '%B %d, %Y',
+ '%d %B %Y',
+ '%d %B, %Y']
+DEPURAR	
+Verdadero
+EXCEPCIONES DE PROPAGACIÓN DE DEPURACIÓN	
+FALSO
+SEPARADOR DECIMAL	
+'.'
+CAMPO AUTOMÁTICO PREDETERMINADO	
+'django.db.models.BigAutoField'
+CONJUNTO DE CARACTERES PREDETERMINADO	
+'utf-8'
+REPORTERO DE EXCEPCIONES PREDETERMINADO	
+'django.views.debug.ExceptionReporter'
+FILTRO DE REPORTERO DE EXCEPCIONES PREDETERMINADO	
+'django.views.debug.SafeExceptionReporterFilter'
+CORREO ELECTRÓNICO PREDETERMINADO	
+'webmaster@localhost'
+ESPACIO DE TABLA DE ÍNDICE PREDETERMINADO	
+"
+ESPACIO_DE_TABLA_PREDETERMINADO	
+"
+AGENTES DE USUARIO NO PERMITIDOS	
+[]
+CORREO ELECTRÓNICO_DEL_RETRO	
+'django.core.mail.backends.smtp.EmailBackend'
+HOST DE CORREO ELECTRÓNICO	
+'smtp.gmail.com'
+CONTRASEÑA DEL HOST DEL CORREO ELECTRÓNICO	
+'********************'
+USUARIO DEL HOST DE CORREO ELECTRÓNICO	
+'marianotrobo@gmail.com'
+PUERTO DE CORREO ELECTRÓNICO	
+587
+ARCHIVO DE CERTIFICADO SSL DE CORREO ELECTRÓNICO	
+Ninguno
+ARCHIVO DE CLAVE SSL DE CORREO ELECTRÓNICO	
+'********************'
+PREFIJO_DEL_ASUNTO_DEL_CORREO_ELECTRÓNICO	
+'[Django] '
+TIEMPO DE ESPERA DEL CORREO ELECTRÓNICO	
+Ninguno
+CORREO ELECTRÓNICO UTILIZAR HORA LOCAL	
+FALSO
+USO DE CORREO ELECTRÓNICO SSL	
+FALSO
+USO DE CORREO ELECTRÓNICO TLS	
+Verdadero
+PERMISOS DEL DIRECTORIO DE CARGA DE ARCHIVOS	
+Ninguno
+MANEJADORES DE CARGA DE ARCHIVOS	
+['django.core.files.uploadhandler.MemoryFileUploadHandler',
+ 'django.core.files.uploadhandler.ManejadorDeCargaDeArchivosTemporales']
+TAMAÑO MÁXIMO DE MEMORIA DE CARGA DE ARCHIVOS	
+2621440
+PERMISOS DE CARGA DE ARCHIVOS	
+420
+DIRECTORIO TEMPORAL DE CARGA DE ARCHIVOS	
+Ninguno
+PRIMER DÍA DE LA SEMANA	
+0
+DIRECTORES DE ACCESORIOS	
+[]
+NOMBRE DEL SCRIPT DE FUERZA	
+Ninguno
+RUTA DEL MÓDULO DE FORMATO	
+Ninguno
+FORMULARIOS_URLFIELD_ASUMAR_HTTPS	
+FALSO
+RENDERIZADOR DE FORMULARIO	
+'django.forms.renderers.DjangoTemplates'
+URLS IGNORABLES_404	
+[]
+APLICACIONES INSTALADAS	
+['gestion.apps.GestionConfig',
+ 'django.contrib.admin',
+ 'django.contrib.auth',
+ 'django.contrib.contenttypes',
+ 'django.contrib.sessions',
+ 'django.contrib.mensajes',
+ 'django.contrib.archivos estáticos']
+IPS INTERNO	
+[]
+IDIOMAS	
+[('af', 'afrikáans'),
+ ('ar', 'árabe'),
+ ('ar-dz', 'árabe argelino'),
+ ('ast', 'asturiano'),
+ ('az', 'azerbaiyano'),
+ ('bg', 'búlgaro'),
+ ('ser', 'bielorruso'),
+ ('bn', 'bengalí'),
+ ('br', 'bretón'),
+ ('bs', 'bosnio'),
+ ('ca', 'catalán'),
+ ('ckb', 'kurdo central (sorani)'),
+ ('cs', 'checo'),
+ ('cy', 'galés'),
+ ('da', 'danés'),
+ ('de', 'alemán'),
+ ('dsb', 'bajo sorabo'),
+ ('el', 'griego'),
+ ('en', 'inglés'),
+ ('en-au', 'inglés australiano'),
+ ('en-gb', 'inglés británico'),
+ ('eo', 'esperanto'),
+ ('es', 'español'),
+ ('es-ar', 'español argentino'),
+ ('es-co', 'español colombiano'),
+ ('es-mx', 'español mexicano'),
+ ('es-ni', 'español nicaragüense'),
+ ('es-ve', 'español venezolano'),
+ ('et', 'estonio'),
+ ('eu', 'vasco'),
+ ('fa', 'persa'),
+ ('fi', 'finlandés'),
+ ('fr', 'francés'),
+ ('fy', 'frisón'),
+ ('ga', 'irlandés'),
+ ('gd', 'gaélico escocés'),
+ ('gl', 'gallego'),
+ ('él', 'hebreo'),
+ ('hola', 'hindi'),
+ ('hr', 'croata'),
+ ('hsb', 'alto sorabo'),
+ ('hu', 'húngaro'),
+ ('hy', 'armenio'),
+ ('ia', 'interlingua'),
+ ('id', 'indonesio'),
+ ('ig', 'igbo'),
+ ('yo', 'yo hago'),
+ ('es', 'islandés'),
+ ('eso', 'italiano'),
+ ('ja', 'japonés'),
+ ('ka', 'georgiano'),
+ ('kab', 'cabilia'),
+ ('kk', 'kazajo'),
+ ('km', 'jemer'),
+ ('kn', 'kannada'),
+ ('ko', 'coreano'),
+ ('ky', 'kirguís'),
+ ('lb', 'luxemburgués'),
+ ('lt', 'lituano'),
+ ('lv', 'letón'),
+ ('mk', 'macedonio'),
+ ('ml', 'malayalam'),
+ ('mn', 'mongol'),
+ ('señor', 'marathi'),
+ ('ms', 'malayo'),
+ ('mi', 'birmano'),
+ ('nb', 'bokmål noruego'),
+ ('ne', 'nepalí'),
+ ('nl', 'holandés'),
+ ('nn', 'nynorsk noruego'),
+ ('os', 'osético'),
+ ('pa', 'Punjabi'),
+ ('pl', 'polaco'),
+ ('pt', 'portugués'),
+ ('pt-br', 'portugués brasileño'),
+ ('ro', 'rumano'),
+ ('ru', 'ruso'),
+ ('sk', 'eslovaco'),
+ ('sl', 'esloveno'),
+ ('sq', 'albanés'),
+ ('sr', 'serbio'),
+ ('sr-latn', 'latín serbio'),
+ ('sv', 'sueco'),
+ ('sw', 'swahili'),
+ ('ta', 'tamil'),
+ ('te', 'telugu'),
+ ('tg', 'tayiko'),
+ ('th', 'tailandés'),
+ ('tk', 'turcomano'),
+ ('tr', 'turco'),
+ ('tt', 'tártaro'),
+ ('udm', 'udmurta'),
+ ('ug', 'uigur'),
+ ('uk', 'ucraniano'),
+ ('ur', 'urdu'),
+ ('uz', 'uzbeko'),
+ ('vi', 'vietnamita'),
+ ('zh-hans', 'chino simplificado'),
+ ('zh-hant', 'chino tradicional')]
+IDIOMAS_BIDI	
+['él', 'ar', 'ar-dz', 'ckb', 'fa', 'ug', 'ur']
+CÓDIGO DE IDIOMA	
+'en-us'
+EDAD DE LAS COOKIES DE IDIOMA	
+Ninguno
+DOMINIO DE COOKIES DE IDIOMA	
+Ninguno
+COOKIE DE IDIOMA HTTP SOLAMENTE	
+FALSO
+NOMBRE DE LA COOKIE DE IDIOMA	
+'lenguaje_django'
+RUTA DE LAS COOKIES DE IDIOMA	
+'/'
+COOKIE DE IDIOMA DEL MISMO SITIO	
+Ninguno
+SEGURIDAD PARA COOKIES DE IDIOMA	
+FALSO
+RUTAS DE CONFIGURACIÓN LOCAL	
+[]
+EXPLOTACIÓN FLORESTAL	
+{}
+CONFIGURACIÓN DE REGISTRO	
+'logging.config.dictConfig'
+URL DE REDIRECCIÓN DE INICIO DE SESIÓN	
+'/turnos/'
+URL DE INICIO DE SESIÓN	
+'/cuentas/inicio de sesión/'
+URL DE REDIRECCIÓN DE CIERRE DE SESIÓN	
+'/acceso/'
+GERENTES	
+[]
+RAÍZ DE MEDIOS	
+PosixPath('/opt/render/proyecto/src/media')
+URL DE MEDIOS	
+'/medios de comunicación/'
+ALMACENAMIENTO DE MENSAJES	
+'django.contrib.messages.storage.fallback.FallbackStorage'
+PRODUCTOS MEDIOS	
+['django.middleware.security.SecurityMiddleware',
+ 'ruido blanco.middleware.WhiteNoiseMiddleware',
+ 'django.contrib.sessions.middleware.SessionMiddleware',
+ 'django.middleware.common.CommonMiddleware',
+ 'django.middleware.csrf.CsrfViewMiddleware',
+ 'django.contrib.auth.middleware.AuthenticationMiddleware',
+ 'django.contrib.messages.middleware.MessageMiddleware',
+ 'django.middleware.clickjacking.XFrameOptionsMiddleware']
+MÓDULOS DE MIGRACIÓN	
+{}
+FORMATO_MES_DÍA	
+'F j'
+AGRUPACIÓN DE NÚMEROS	
+0
+HASHERS DE CONTRASEÑA	
+'********************'
+TIEMPO DE ESPERA PARA RESTABLECER CONTRASEÑA	
+'********************'
+PREPENDER_WWW	
+FALSO
+CONFIGURACIÓN_URL_RAÍZ	
+'centro_estetica.urls'
+CLAVE SECRETA	
+'********************'
+RESERVAS DE CLAVE SECRETA	
+'********************'
+TIPO DE CONTENIDO SEGURO NOSNIFF	
+Verdadero
+POLÍTICA DE APERTURA DE ORIGEN CRUZADO SEGURO	
+'mismo origen'
+HSTS SEGURO INCLUYE SUBDOMINIOS	
+FALSO
+PRECARGA SEGURA DE HSTS	
+FALSO
+SEGURIDAD_HSTS_SEGUNDOS	
+0
+ENCABEZADO SSL DE PROXY SEGURO	
+Ninguno
+EXENTO DE REDIRECCIÓN SEGURA	
+[]
+POLÍTICA DE REFERENCIA SEGURA	
+'mismo origen'
+HOST SSL SEGURO	
+Ninguno
+REDIRECCIÓN SSL SEGURA	
+FALSO
+CORREO ELECTRÓNICO DEL SERVIDOR	
+'root@localhost'
+ALIAS DE CACHÉ DE SESIÓN	
+'por defecto'
+EDAD DE LAS COOKIES DE SESIÓN	
+1209600
+DOMINIO DE COOKIES DE SESIÓN	
+Ninguno
+COOKIE DE SESIÓN HTTP SOLAMENTE	
+Verdadero
+NOMBRE DE LA COOKIE DE SESIÓN	
+'id de sesión'
+RUTA DE LAS COOKIES DE SESIÓN	
+'/'
+COOKIE DE SESIÓN DEL MISMO SITIO	
+'Flojo'
+SEGURIDAD DE COOKIES DE SESIÓN	
+FALSO
+MOTOR DE SESIÓN	
+'django.contrib.sessions.backends.db'
+LA SESIÓN EXPIRA AL CERRAR EL NAVEGADOR	
+FALSO
+RUTA DEL ARCHIVO DE SESIÓN	
+Ninguno
+SESIÓN_GUARDA_CADA_SOLICITUD	
+FALSO
+SERIALIZADOR DE SESIÓN	
+'django.contrib.sessions.serializers.JSONSerializer'
+MÓDULO DE CONFIGURACIÓN	
+'centro_estetica.settings'
+FORMATO DE FECHA Y HORA CORTO	
+'m/d/Y P'
+FORMATO DE FECHA CORTA	
+'m/d/A'
+FIRMA_BACKEND	
+'django.core.signing.TimestampSigner'
+COMPROBACIONES DEL SISTEMA SILENCIADAS	
+[]
+DIRECTORES_DE_ARCHIVOS_ESTÁTICOS	
+[]
+Buscadores de archivos estáticos	
+['django.contrib.staticfiles.finders.BuscadorDeSistemasDeArchivos',
+ 'django.contrib.staticfiles.finders.AppDirectoriesFinder']
+ALMACENAMIENTO DE ARCHIVOS ESTÁTICOS	
+'whitenoise.storage.Almacenamiento de archivos estáticos de manifiesto comprimido'
+RAÍZ ESTÁTICA	
+PosixPath('/opt/render/proyecto/src/archivos estáticos')
+URL ESTÁTICA	
+'/estático/'
+ALMACENES	
+{'predeterminado': {'BACKEND': 'django.core.files.storage.FileSystemStorage'},
+ 'archivos estáticos': {'BACKEND': 'django.contrib.archivos estáticos.almacenamiento.StaticFilesStorage'}}
+PLANTILLAS	
+[{'APP_DIRS': Verdadero,
+  'BACKEND': 'django.template.backends.django.DjangoTemplates',
+  'DIRS': [],
+  'OPCIONES': {'context_processors': ['django.template.context_processors.request',
+                                     'django.contrib.auth.context_processors.auth',
+                                     'django.contrib.messages.context_processors.messages',
+                                     'gestion.context_processors.configuracion_global']}}]
+PRUEBA_APLICACIONES_NO_SERIALIZADAS	
+[]
+EJECUTOR DE PRUEBAS	
+'django.test.runner.DiscoverRunner'
+SEPARADOR DE MIL	
+','
+FORMATO DE TIEMPO	
+'PAG'
+FORMATOS DE ENTRADA DE TIEMPO	
+['%H:%M:%S', '%H:%M:%S.%f', '%H:%M']
+ZONA HORARIA	
+'América/Argentina/Buenos_Aires'
+USO_I18N	
+Verdadero
+USAR SEPARADOR DE MIL	
+FALSO
+USE_TZ	
+Verdadero
+USO_X_HOST_REENVIADO	
+FALSO
+USAR_X_PUERTO_REENVIADO	
+FALSO
+APLICACIÓN WSGI	
+'centro_estetica.wsgi.aplicación'
+OPCIONES DE X_FRAME	
+'DENEGAR'
+FORMATO AÑO_MES	
+'Para ti'
+Este error se debe a que está DEBUG = Trueen el archivo de configuración de Django. Cámbielo a Falsey Django mostrará una página estándar generada por el controlador para este código de estado.

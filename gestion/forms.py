@@ -93,15 +93,16 @@ class ServicioForm(forms.ModelForm):
             'porcentaje_dueño': forms.NumberInput(attrs={'class': 'form-control'}),
         }
 
+# gestion/forms.py
+
 class RegistroEmpleadoForm(forms.ModelForm):
-    # Campos extra que no están en el modelo Empleado pero sí en User
+    # ... (los campos del formulario se quedan igual) ...
     username = forms.CharField(label="Nombre de Usuario", widget=forms.TextInput(attrs={'class': 'form-control'}))
     email = forms.EmailField(label="Email", widget=forms.EmailInput(attrs={'class': 'form-control'}))
     password = forms.CharField(label="Contraseña", widget=forms.PasswordInput(attrs={'class': 'form-control'}))
 
     class Meta:
         model = Empleado
-        # Campos del modelo Empleado que queremos en el formulario
         fields = ['nombre', 'apellido', 'puesto']
         widgets = {
             'nombre': forms.TextInput(attrs={'class': 'form-control'}),
@@ -109,11 +110,16 @@ class RegistroEmpleadoForm(forms.ModelForm):
             'puesto': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
+    # ↓↓↓ AÑADIMOS ESTA VALIDACIÓN INTELIGENTE ↓↓↓
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        if User.objects.filter(username=username).exists():
+            raise forms.ValidationError("Este nombre de usuario ya está en uso. Por favor, elegí otro.")
+        return username
+
     @transaction.atomic
     def save(self, commit=True):
-        # Usamos transaction.atomic para asegurar que todo se ejecute correctamente
-
-        # Primero, creamos el objeto User
+        # ... (el método save que ya teníamos se queda igual) ...
         user = User.objects.create_user(
             username=self.cleaned_data['username'],
             email=self.cleaned_data['email'],
@@ -122,18 +128,13 @@ class RegistroEmpleadoForm(forms.ModelForm):
             last_name=self.cleaned_data['apellido']
         )
 
-        # Lo asignamos al grupo "Empleado"
         try:
             grupo_empleado = Group.objects.get(name='Empleado')
             user.groups.add(grupo_empleado)
         except Group.DoesNotExist:
-            # Si el grupo no existe, podemos ignorarlo o manejar el error
-            # Por ahora, lo ignoramos para que el registro no falle por esto.
             pass
 
-        # Ahora, obtenemos la instancia del Empleado del formulario, pero no la guardamos aún
         empleado = super().save(commit=False)
-        # Vinculamos el User que acabamos de crear
         empleado.user = user
 
         if commit:
