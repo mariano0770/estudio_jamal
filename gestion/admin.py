@@ -5,7 +5,7 @@ from django.contrib import admin
 from .models import (
     Cliente, Servicio, Turno, Abono, 
     ClienteAbono, Caja, DeudaEmpleado, Empleado, 
-    Asistencia, Configuracion, Producto, Plan, ClientePlan
+    Asistencia, Configuracion, Producto, Plan, ClientePlan, Profesional, IngresoProfesional
 )
 
 class AbonoAdmin(admin.ModelAdmin):
@@ -29,5 +29,7 @@ admin.site.register(Empleado)
 admin.site.register(Asistencia)
 admin.site.register(Configuracion)
 admin.site.register(Producto, ProductoAdmin)
+admin.site.register(Profesional)
+admin.site.register(IngresoProfesional)
 
 

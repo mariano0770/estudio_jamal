@@ -196,4 +196,46 @@ class ClientePlan(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"Suscripción de {self.cliente} al {self.plan.nombre}"
+        return f"Suscripción de {self.cliente} al {self.plan.nombre}"   
+
+class Profesional(models.Model):
+    """
+    Guarda los datos de un profesional externo que alquila un espacio.
+    Ej: Jorge de Pilates.
+    """
+    nombre = models.CharField(max_length=100)
+    actividad = models.CharField(max_length=100)
+    porcentaje_para_centro = models.DecimalField(
+        max_digits=5, 
+        decimal_places=2,
+        help_text="El porcentaje (ej: 30) que el profesional le paga al centro."
+    )
+    activo = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"{self.nombre} ({self.actividad})"
+
+class IngresoProfesional(models.Model):
+    """
+    Registra un ingreso generado por un profesional externo.
+    Esto representa una deuda del profesional CON el centro.
+    """
+    ESTADO_CHOICES = [
+        ('Pendiente', 'Pendiente de Pago'),
+        ('Pagado', 'Pagado'),
+    ]
+
+    profesional = models.ForeignKey(Profesional, on_delete=models.CASCADE)
+    cliente_nombre = models.CharField(max_length=200, help_text="Nombre del cliente del profesional")
+    monto_total_abono = models.DecimalField(max_digits=10, decimal_places=2)
+    monto_para_centro = models.DecimalField(max_digits=10, decimal_places=2, editable=False)
+    estado_pago = models.CharField(max_length=10, choices=ESTADO_CHOICES, default='Pendiente')
+    fecha_registro = models.DateField(default=timezone.now)
+
+    def save(self, *args, **kwargs):
+        # Lógica automática: Calcula el monto para el centro antes de guardar
+        self.monto_para_centro = self.monto_total_abono * (self.profesional.porcentaje_para_centro / 100)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.profesional.nombre} - ${self.monto_para_centro} ({self.estado_pago})"
