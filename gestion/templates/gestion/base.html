@@ -55,7 +55,7 @@
                         <a class="nav-link {% if 'clientes' in request.path %}active{% endif %}" href="{% url 'lista-clientes' %}">Clientes</a>
                     </li>
 
-                    {% if is_admin %}
+                    {% if user.is_staff %}
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle {% if 'servicios' in request.path or 'productos' in request.path or 'abonos' in request.path or 'planes' in request.path %}active{% endif %}" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Catálogo

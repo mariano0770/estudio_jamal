@@ -19,11 +19,12 @@ import json
 from django.core.paginator import Paginator
 from dateutil.relativedelta import relativedelta
 from .decorators import group_required, cliente_access_decorator
+from django.contrib.admin.views.decorators import staff_member_required
 
 # --- Vistas de Dashboard y Listas ---
 
 @login_required
-@group_required('Administrador')
+@staff_member_required
 def dashboard(request):
     hoy = timezone.now().date()
     proxima_semana = hoy + timedelta(days=7)
@@ -180,7 +181,7 @@ def cancelar_turno(request, turno_id):
 # --- Vistas Financieras (Abonos, Caja, Comisiones) ---
 
 @login_required
-@group_required('Administrador', 'Empleado')
+@staff_member_required
 def vender_abono(request):
     if request.method == 'POST':
         form = VentaAbonoForm(request.POST)
@@ -218,7 +219,7 @@ def vender_abono(request):
     return render(request, 'gestion/vender_abono.html', {'form': form})
 
 @login_required
-@group_required('Administrador')
+@staff_member_required
 def vista_caja(request):
     movimientos = Caja.objects.order_by('-fecha_hora')
     total_ingresos = Caja.objects.filter(tipo='Ingreso').aggregate(total=Sum('monto'))['total'] or 0
@@ -228,7 +229,7 @@ def vista_caja(request):
     return render(request, 'gestion/vista_caja.html', contexto)
 
 @login_required
-@group_required('Administrador')
+@staff_member_required
 def registrar_egreso(request):
     if request.method == 'POST':
         form = EgresoForm(request.POST)
@@ -245,14 +246,14 @@ def registrar_egreso(request):
     return render(request, 'gestion/registrar_egreso.html', {'form': form})
 
 @login_required
-@group_required('Administrador')
+@staff_member_required
 def lista_deudas(request):
     deudas = DeudaEmpleado.objects.order_by('estado', '-fecha_generada')
     contexto = {'deudas': deudas}
     return render(request, 'gestion/lista_deudas.html', contexto)
 
 @login_required
-@group_required('Administrador')
+@staff_member_required
 def pagar_deuda(request, deuda_id):
     if request.method == 'POST':
         deuda = get_object_or_404(DeudaEmpleado, id=deuda_id)
@@ -275,7 +276,7 @@ def pagar_deuda(request, deuda_id):
 # --- Vistas de Reportes y Configuración ---
 
 @login_required
-@group_required('Administrador')
+@staff_member_required
 def reporte_financiero(request):
     now = datetime.now()
     movimientos_mes = Caja.objects.filter(fecha_hora__month=now.month, fecha_hora__year=now.year)
@@ -303,7 +304,7 @@ def generar_pdf_turnos_hoy(request):
     return response
 
 @login_required
-@group_required('Administrador')
+@staff_member_required
 def configuracion_view(request):
     config, created = Configuracion.objects.get_or_create(pk=1)
     if request.method == 'POST':
@@ -382,12 +383,12 @@ def update_turno(request):
     return JsonResponse({'status': 'error', 'message': 'Método no permitido'}, status=405)
 
 @login_required
-@group_required('Administrador')
+@staff_member_required
 def reportes_hub(request):
     return render(request, 'gestion/reportes_hub.html')
 
 @login_required
-@group_required('Administrador')
+@staff_member_required
 def reporte_asistencias(request):
     form = ReporteFechasForm(request.GET or None)
     asistencias = None
@@ -407,7 +408,7 @@ def reporte_asistencias(request):
     return render(request, 'gestion/reporte_asistencias.html', contexto)
 
 @login_required
-@group_required('Administrador')
+@staff_member_required
 def vista_caja(request):
     # La lógica para calcular los totales no cambia
     total_ingresos = Caja.objects.filter(tipo='Ingreso').aggregate(total=Sum('monto'))['total'] or 0
@@ -435,7 +436,7 @@ def vista_caja(request):
     return render(request, 'gestion/vista_caja.html', contexto)
 
 @login_required
-@group_required('Administrador')
+@staff_member_required
 def financial_chart_data(request):
     labels = []
     income_data = []
@@ -481,7 +482,7 @@ def financial_chart_data(request):
     return JsonResponse(data)
 
 @login_required
-@group_required('Administrador')
+@staff_member_required
 def registrar_empleado(request):
     if request.method == 'POST':
         form = RegistroEmpleadoForm(request.POST)
@@ -494,7 +495,7 @@ def registrar_empleado(request):
     return render(request, 'gestion/registrar_empleado.html', {'form': form})
 
 @login_required
-@group_required('Administrador')
+@staff_member_required
 def lista_empleados(request):
     empleados = Empleado.objects.all()
     return render(request, 'gestion/lista_empleados.html', {'empleados': empleados})
@@ -537,7 +538,7 @@ def cliente_dashboard(request):
     return render(request, 'gestion/cliente_dashboard.html', contexto)
 
 @login_required
-@group_required('Administrador', 'Empleado') # Permitir a ambos roles vender
+@staff_member_required
 def registrar_venta_producto(request):
     if request.method == 'POST':
         form = VentaProductoForm(request.POST)
@@ -568,7 +569,7 @@ def registrar_venta_producto(request):
     return render(request, 'gestion/registrar_venta_producto.html', {'form': form})
 
 @login_required
-@group_required('Administrador')
+@staff_member_required
 def lista_productos(request):
     query = request.GET.get('q')
     if query:
@@ -579,7 +580,7 @@ def lista_productos(request):
     return render(request, 'gestion/lista_productos.html', {'productos': productos, 'query': query})
 
 @login_required
-@group_required('Administrador')
+@staff_member_required
 def crear_producto(request):
     if request.method == 'POST':
         form = ProductoForm(request.POST)
@@ -592,7 +593,7 @@ def crear_producto(request):
     return render(request, 'gestion/crear_producto.html', {'form': form})
 
 @login_required
-@group_required('Administrador')
+@staff_member_required
 def editar_producto(request, producto_id):
     producto = get_object_or_404(Producto, id=producto_id)
     if request.method == 'POST':
@@ -606,7 +607,7 @@ def editar_producto(request, producto_id):
     return render(request, 'gestion/editar_producto.html', {'form': form})
 
 @login_required
-@group_required('Administrador')
+@staff_member_required
 def eliminar_producto(request, producto_id):
     producto = get_object_or_404(Producto, id=producto_id)
     if request.method == 'POST':
@@ -638,14 +639,14 @@ def enviar_saludo_cumpleanos(request, cliente_id):
     return redirect('dashboard')
 
 @login_required
-@group_required('Administrador')
+@staff_member_required
 def lista_usuarios(request):
     # Excluimos al superusuario de la lista para no editarlo por error
     usuarios = User.objects.filter(is_superuser=False).order_by('username')
     return render(request, 'gestion/lista_usuarios.html', {'usuarios': usuarios})
 
 @login_required
-@group_required('Administrador')
+@staff_member_required
 def editar_usuario(request, user_id):
     usuario = get_object_or_404(User, id=user_id)
     if request.method == 'POST':
@@ -659,7 +660,7 @@ def editar_usuario(request, user_id):
     return render(request, 'gestion/editar_usuario.html', {'form': form, 'usuario': usuario})
 
 @login_required
-@group_required('Administrador')
+@staff_member_required
 def cambiar_password(request, user_id):
     usuario = get_object_or_404(User, id=user_id)
     if request.method == 'POST':
@@ -673,7 +674,7 @@ def cambiar_password(request, user_id):
     return render(request, 'gestion/cambiar_password.html', {'form': form, 'usuario': usuario})
 
 @login_required
-@group_required('Administrador', 'Empleado') # Permitimos que ambos roles editen clientes
+@staff_member_required
 def editar_cliente(request, cliente_id):
     cliente = get_object_or_404(Cliente, id=cliente_id)
     if request.method == 'POST':
@@ -689,7 +690,7 @@ def editar_cliente(request, cliente_id):
     return render(request, 'gestion/editar_cliente.html', {'form': form, 'cliente': cliente})
 
 @login_required
-@group_required('Administrador', 'Empleado')
+@staff_member_required
 def editar_servicio(request, servicio_id):
     servicio = get_object_or_404(Servicio, id=servicio_id)
     if request.method == 'POST':
@@ -704,7 +705,7 @@ def editar_servicio(request, servicio_id):
     return render(request, 'gestion/editar_servicio.html', {'form': form, 'servicio': servicio})
 
 @login_required
-@group_required('Administrador', 'Empleado')
+@staff_member_required
 def vender_plan(request):
     if request.method == 'POST':
         form = VentaPlanForm(request.POST)
@@ -739,13 +740,13 @@ def vender_plan(request):
     return render(request, 'gestion/vender_plan.html', {'form': form})
 
 @login_required
-@group_required('Administrador')
+@staff_member_required
 def lista_abonos(request):
     abonos = Abono.objects.all().order_by('nombre')
     return render(request, 'gestion/lista_abonos.html', {'abonos': abonos})
 
 @login_required
-@group_required('Administrador')
+@staff_member_required
 def crear_abono(request):
     if request.method == 'POST':
         form = AbonoForm(request.POST)
@@ -758,7 +759,7 @@ def crear_abono(request):
     return render(request, 'gestion/crear_abono.html', {'form': form})
 
 @login_required
-@group_required('Administrador')
+@staff_member_required
 def editar_abono(request, abono_id):
     abono = get_object_or_404(Abono, id=abono_id)
     if request.method == 'POST':
@@ -772,7 +773,7 @@ def editar_abono(request, abono_id):
     return render(request, 'gestion/editar_abono.html', {'form': form})
 
 @login_required
-@group_required('Administrador')
+@staff_member_required
 def eliminar_abono(request, abono_id):
     abono = get_object_or_404(Abono, id=abono_id)
     if request.method == 'POST':
@@ -782,19 +783,19 @@ def eliminar_abono(request, abono_id):
     return render(request, 'gestion/confirmar_eliminacion.html', {'objeto': abono})
 
 @login_required
-@group_required('Administrador')
+@staff_member_required
 def lista_planes(request):
     planes = Plan.objects.all().order_by('nombre')
     return render(request, 'gestion/lista_planes.html', {'planes': planes})
 
 @login_required
-@group_required('Administrador')
+@staff_member_required
 def lista_planes(request):
     planes = Plan.objects.all().order_by('nombre')
     return render(request, 'gestion/lista_planes.html', {'planes': planes})
 
 @login_required
-@group_required('Administrador')
+@staff_member_required
 def crear_plan(request):
     if request.method == 'POST':
         form = PlanForm(request.POST)
@@ -807,7 +808,7 @@ def crear_plan(request):
     return render(request, 'gestion/crear_plan.html', {'form': form})
 
 @login_required
-@group_required('Administrador')
+@staff_member_required
 def editar_plan(request, plan_id):
     plan = get_object_or_404(Plan, id=plan_id)
     if request.method == 'POST':
@@ -821,7 +822,7 @@ def editar_plan(request, plan_id):
     return render(request, 'gestion/editar_plan.html', {'form': form})
 
 @login_required
-@group_required('Administrador')
+@staff_member_required
 def eliminar_plan(request, plan_id):
     plan = get_object_or_404(Plan, id=plan_id)
     if request.method == 'POST':

@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from decouple import config
 from pathlib import Path
 from decouple import config
-import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = False
 
-ALLOWED_HOSTS = ['estudio-jamal.onrender.com']
+ALLOWED_HOSTS = ['marianot0770.pythonanywhere.com']
 
 
 # Application definition
@@ -78,7 +77,10 @@ WSGI_APPLICATION = 'centro_estetica.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(default=f'sqlite:///{BASE_DIR / "db.sqlite3"}')
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 
 
@@ -135,8 +137,9 @@ EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
 
 # CONFIGURACIÓN DE AUTENTICACIÓN
-LOGIN_REDIRECT_URL = '/turnos/'  # A dónde ir después de un login exitoso (al Dashboard)
-LOGOUT_REDIRECT_URL = '/login/' # A dónde ir después de cerrar sesión
+#LOGIN_REDIRECT_URL = '/turnos/'  # A dónde ir después de un login exitoso (al Dashboard)
+#LOGOUT_REDIRECT_URL = '/login/' # A dónde ir después de cerrar sesión
+LOGIN_URL = '/admin/login/'
 
 # CONFIGURACIÓN PARA ARCHIVOS SUBIDOS POR EL USUARIO
 MEDIA_URL = '/media/'
