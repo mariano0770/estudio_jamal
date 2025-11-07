@@ -239,3 +239,23 @@ class IngresoProfesional(models.Model):
 
     def __str__(self):
         return f"{self.profesional.nombre} - ${self.monto_para_centro} ({self.estado_pago})"
+
+class Comision(models.Model):
+    """
+    Registra las comisiones generadas por la venta de abonos.
+    NOTA: Este modelo parece ser viejo, el proyecto ahora usa DeudaEmpleado.
+    Revisar si se debe borrar o mantener.
+    """
+    ESTADO_CHOICES = [
+        ('Pendiente', 'Pendiente de Pago'),
+        ('Pagada', 'Pagada'),
+    ]
+    
+    # Tu 'views.py' espera que 'venta_abono' sea un link a ClienteAbono
+    venta_abono = models.OneToOneField(ClienteAbono, on_delete=models.CASCADE)
+    monto = models.DecimalField(max_digits=10, decimal_places=2)
+    fecha_generada = models.DateTimeField(default=timezone.now)
+    estado = models.CharField(max_length=10, choices=ESTADO_CHOICES, default='Pendiente')
+
+    def __str__(self):
+        return f"Comisión de ${self.monto} por venta de {self.venta_abono.abono.nombre} a {self.venta_abono.cliente.nombre}"
