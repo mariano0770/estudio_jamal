@@ -220,16 +220,6 @@ def vender_abono(request):
 
 @login_required
 @staff_member_required
-def vista_caja(request):
-    movimientos = Caja.objects.order_by('-fecha_hora')
-    total_ingresos = Caja.objects.filter(tipo='Ingreso').aggregate(total=Sum('monto'))['total'] or 0
-    total_egresos = Caja.objects.filter(tipo='Egreso').aggregate(total=Sum('monto'))['total'] or 0
-    balance_total = total_ingresos - total_egresos
-    contexto = {'movimientos': movimientos, 'balance_total': balance_total}
-    return render(request, 'gestion/vista_caja.html', contexto)
-
-@login_required
-@staff_member_required
 def registrar_egreso(request):
     if request.method == 'POST':
         form = EgresoForm(request.POST)
@@ -852,10 +842,10 @@ def registrar_ingreso_profesional(request):
 @login_required
 @staff_member_required
 def pagar_comision(request, comision_id):
+    # (Buscamos la Comision usando el 'comision_id' que viene de la URL)
+    comision = get_object_or_404(Comision, id=comision_id)
+    
     if request.method == 'POST':
-        # (Asegurate de que 'Comision' y 'Caja' estén importados al principio del archivo)
-        comision = get_object_or_404(Comision, id=comision_id)
-        
         # 1. Cambiamos el estado de la comisión
         comision.estado = 'Pagada'
         comision.save()
@@ -869,4 +859,3 @@ def pagar_comision(request, comision_id):
     
     # Redirigimos siempre a la lista de comisiones
     return redirect('lista-comisiones')
-
