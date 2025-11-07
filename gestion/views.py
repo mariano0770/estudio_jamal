@@ -3,7 +3,7 @@
 from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Cliente, Servicio, Turno, Abono, ClienteAbono, Caja, DeudaEmpleado, Empleado, Asistencia, Configuracion, Producto, Plan, ClientePlan
+from .models import Cliente, Servicio, Turno, Abono, ClienteAbono, Caja, DeudaEmpleado, Empleado, Asistencia, Configuracion, Producto, Plan, ClientePlan, Comision
 from .forms import TurnoForm, VentaAbonoForm, ConfiguracionForm, EgresoForm, ReporteFechasForm, ClienteForm, ServicioForm, RegistroEmpleadoForm, RegistroClienteForm, VentaProductoForm, ProductoForm, AdminEditarUsuarioForm, VentaPlanForm, AbonoForm, PlanForm, IngresoProfesionalForm
 from django.core.mail import send_mail
 from django.http import HttpResponse, JsonResponse
@@ -848,4 +848,25 @@ def registrar_ingreso_profesional(request):
         form = IngresoProfesionalForm()
 
     return render(request, 'gestion/registrar_ingreso_profesional.html', {'form': form})
+
+@login_required
+@staff_member_required
+def pagar_comision(request, comision_id):
+    if request.method == 'POST':
+        # (Asegurate de que 'Comision' y 'Caja' estén importados al principio del archivo)
+        comision = get_object_or_404(Comision, id=comision_id)
+        
+        # 1. Cambiamos el estado de la comisión
+        comision.estado = 'Pagada'
+        comision.save()
+
+        # 2. Creamos el egreso en la caja
+        Caja.objects.create(
+            concepto=f'Pago de comisión: {comision.venta_abono.abono.nombre} a {comision.venta_abono.cliente.nombre}',
+            monto=comision.monto,
+            tipo='Egreso'
+        )
+    
+    # Redirigimos siempre a la lista de comisiones
+    return redirect('lista-comisiones')
 
