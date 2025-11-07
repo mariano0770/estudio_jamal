@@ -1,0 +1,14 @@
+{% extends 'gestion/base.html' %}
+
+{% block title %}Registrar Ingreso de Profesional{% endblock %}
+
+{% block content %}
+<h1>Registrar Ingreso de Profesional </h1>
+<p>Registrá el monto total que un profesional (ej: Jorge) cobró a su cliente. El sistema calculará automáticamente la parte del centro y la marcará como "Pendiente de Pago".</p>
+
+<form method="post" style="max-width: 600px; background-color: #fff; padding: 20px; border-radius: 8px; border: 1px solid #ddd;">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Registrar Deuda</button>
+</form>
+{% endblock %}

@@ -1,7 +1,7 @@
 # gestion/forms.py
 from django import forms
 from django.contrib.auth.models import User, Group
-from .models import Turno, Cliente, Abono, Configuracion, Servicio, Empleado, Producto, Plan
+from .models import Turno, Cliente, Abono, Configuracion, Servicio, Empleado, Producto, Plan, Profesional, IngresoProfesional
 from django.db import transaction
 
 class TurnoForm(forms.ModelForm):
@@ -276,4 +276,22 @@ class PlanForm(forms.ModelForm):
             'precio': forms.NumberInput(attrs={'class': 'form-control'}),
             'frecuencia': forms.Select(attrs={'class': 'form-select'}),
             'sesiones_por_periodo': forms.NumberInput(attrs={'class': 'form-control'}),
+        }
+
+class IngresoProfesionalForm(forms.ModelForm):
+    class Meta:
+        model = IngresoProfesional
+        # Campos que se mostrarán en el formulario:
+        fields = ['profesional', 'cliente_nombre', 'monto_total_abono']
+
+        # (Opcional) Le damos un estilo para que se vea bien
+        widgets = {
+            'profesional': forms.Select(attrs={'class': 'form-control'}),
+            'cliente_nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre del cliente del profesional'}),
+            'monto_total_abono': forms.NumberInput(attrs={'class': 'form-control'}),
+        }
+        labels = {
+            'profesional': 'Profesional',
+            'cliente_nombre': 'Nombre del Cliente',
+            'monto_total_abono': 'Monto Total Cobrado por el Profesional',
         }

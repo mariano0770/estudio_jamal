@@ -4,7 +4,7 @@ from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Cliente, Servicio, Turno, Abono, ClienteAbono, Caja, DeudaEmpleado, Empleado, Asistencia, Configuracion, Producto, Plan, ClientePlan
-from .forms import TurnoForm, VentaAbonoForm, ConfiguracionForm, EgresoForm, ReporteFechasForm, ClienteForm, ServicioForm, RegistroEmpleadoForm, RegistroClienteForm, VentaProductoForm, ProductoForm, AdminEditarUsuarioForm, VentaPlanForm, AbonoForm, PlanForm
+from .forms import TurnoForm, VentaAbonoForm, ConfiguracionForm, EgresoForm, ReporteFechasForm, ClienteForm, ServicioForm, RegistroEmpleadoForm, RegistroClienteForm, VentaProductoForm, ProductoForm, AdminEditarUsuarioForm, VentaPlanForm, AbonoForm, PlanForm, IngresoProfesionalForm
 from django.core.mail import send_mail
 from django.http import HttpResponse, JsonResponse
 from django.template.loader import render_to_string
@@ -830,4 +830,22 @@ def eliminar_plan(request, plan_id):
         messages.warning(request, f'El plan "{plan.nombre}" ha sido eliminado.')
         return redirect('lista-planes')
     return render(request, 'gestion/confirmar_eliminacion.html', {'objeto': plan})
+
+@login_required
+@staff_member_required
+def registrar_ingreso_profesional(request):
+    if request.method == 'POST':
+        form = IngresoProfesionalForm(request.POST)
+        if form.is_valid():
+            # Guardamos el formulario.
+            # El modelo se encarga de:
+            # 1. Calcular el 'monto_para_centro'
+            # 2. Poner el 'estado_pago' en 'Pendiente'
+            form.save()
+            messages.success(request, '¡Deuda registrada! El profesional ahora tiene un pago pendiente.')
+            return redirect('dashboard') # Redirigimos al dashboard
+    else:
+        form = IngresoProfesionalForm()
+
+    return render(request, 'gestion/registrar_ingreso_profesional.html', {'form': form})
 
