@@ -72,6 +72,7 @@
                         <li class="nav-item"><a class="nav-link {% if 'empleados' in request.path %}active{% endif %}" href="{% url 'lista-empleados' %}">Empleados</a></li>
                         <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'vista-caja' %}active{% endif %}" href="{% url 'vista-caja' %}">Caja</a></li>
                         <li class="nav-item"><a class="nav-link {% if 'deudas' in request.path %}active{% endif %}" href="{% url 'lista-deudas' %}">Deudas</a></li>
+                        <li class="nav-item"><a class="nav-link {% if 'profesionales' in request.path %}active{% endif %}" href="{% url 'lista-ingresos-profesionales' %}">Deudas Prof.</a></li>
                         <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'reportes-hub' %}active{% endif %}" href="{% url 'reportes-hub' %}">Reportes</a></li>
                         <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'configuracion' %}active{% endif %}" href="{% url 'configuracion' %}">Configuración</a></li>
                     {% endif %}

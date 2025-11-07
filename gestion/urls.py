@@ -59,6 +59,8 @@ urlpatterns = [
     path('planes/<int:plan_id>/eliminar/', views.eliminar_plan, name='eliminar-plan'),
     path('comisiones/<int:comision_id>/pagar/', views.pagar_comision, name='pagar-comision'),
     path('profesionales/registrar-ingreso/', views.registrar_ingreso_profesional, name='registrar-ingreso-profesional'),
+    path('profesionales/lista-deudas/', views.lista_ingresos_profesionales, name='lista-ingresos-profesionales'),
+    path('profesionales/pagar/<int:ingreso_id>/', views.pagar_ingreso_profesional, name='pagar-ingreso-profesional'),
 ]
 
 

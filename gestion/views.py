@@ -3,7 +3,7 @@
 from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Cliente, Servicio, Turno, Abono, ClienteAbono, Caja, DeudaEmpleado, Empleado, Asistencia, Configuracion, Producto, Plan, ClientePlan, Comision
+from .models import Cliente, Servicio, Turno, Abono, ClienteAbono, Caja, DeudaEmpleado, Empleado, Asistencia, Configuracion, Producto, Plan, ClientePlan, Comision, IngresoProfesional
 from .forms import TurnoForm, VentaAbonoForm, ConfiguracionForm, EgresoForm, ReporteFechasForm, ClienteForm, ServicioForm, RegistroEmpleadoForm, RegistroClienteForm, VentaProductoForm, ProductoForm, AdminEditarUsuarioForm, VentaPlanForm, AbonoForm, PlanForm, IngresoProfesionalForm
 from django.core.mail import send_mail
 from django.http import HttpResponse, JsonResponse
@@ -859,3 +859,41 @@ def pagar_comision(request, comision_id):
     
     # Redirigimos siempre a la lista de comisiones
     return redirect('lista-comisiones')
+
+@login_required
+@staff_member_required
+def lista_ingresos_profesionales(request):
+    # Buscamos todas las deudas, mostrando las Pendientes primero
+    lista_deudas = IngresoProfesional.objects.all().order_by('estado_pago', '-fecha_registro')
+
+    # Calculamos el total que le deben a Cecilia
+    total_pendiente = IngresoProfesional.objects.filter(estado_pago='Pendiente').aggregate(total=Sum('monto_para_centro'))['total'] or 0
+
+    contexto = {
+        'lista_deudas': lista_deudas,
+        'total_pendiente': total_pendiente
+    }
+    return render(request, 'gestion/lista_ingresos_profesionales.html', contexto)
+
+@login_required
+@staff_member_required
+def pagar_ingreso_profesional(request, ingreso_id):
+    # 1. Buscamos la deuda específica por su ID
+    ingreso = get_object_or_404(IngresoProfesional, id=ingreso_id)
+
+    if request.method == 'POST':
+        # 2. Cambiamos el estado de la deuda a "Pagado"
+        ingreso.estado_pago = 'Pagado'
+        ingreso.save()
+
+        # 3. Creamos el INGRESO en la Caja de Cecilia
+        Caja.objects.create(
+            concepto=f'Pago de Profesional: {ingreso.profesional.nombre} (Cliente: {ingreso.cliente_nombre})',
+            monto=ingreso.monto_para_centro,
+            tipo='Ingreso'
+        )
+
+        messages.success(request, f'¡Pago de {ingreso.profesional.nombre} registrado en la caja!')
+
+    # 4. Redirigimos de vuelta a la lista de deudas
+    return redirect('lista-ingresos-profesionales')

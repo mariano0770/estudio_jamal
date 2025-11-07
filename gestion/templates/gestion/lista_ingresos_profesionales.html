@@ -1,0 +1,63 @@
+{% extends 'gestion/base.html' %}
+
+{% block title %}Deudas de Profesionales{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>Deudas de Profesionales</h1>
+        <div class="card text-white bg-danger">
+            <div class="card-body">
+                <h5 class="card-title">Total Pendiente de Cobro</h5>
+                <p class="card-text fs-4 fw-bold">${{ total_pendiente|floatformat:2 }}</p>
+            </div>
+        </div>
+    </div>
+
+    <p>Aquí se listan todos los ingresos generados por profesionales externos y el estado de su pago al centro.</p>
+
+    <table class="table table-striped table-hover bg-white shadow-sm">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">Fecha Registro</th>
+                <th scope="col">Profesional</th>
+                <th scope="col">Monto Total</th>
+                <th scope="col">Monto p/ Centro</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for deuda in lista_deudas %}
+            <tr>
+                <td>{{ deuda.fecha_registro|date:"d/m/Y" }}</td>
+                <td>{{ deuda.profesional.nombre }} ({{ deuda.profesional.actividad }})</td>
+                <td>${{ deuda.monto_total_abono|floatformat:2 }}</td>
+                <td class="fw-bold">${{ deuda.monto_para_centro|floatformat:2 }}</td>
+                <td>
+                    {% if deuda.estado_pago == 'Pendiente' %}
+                        <span class="badge bg-warning text-dark">Pendiente</span>
+                    {% else %}
+                        <span class="badge bg-success">Pagado</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if deuda.estado_pago == 'Pendiente' %}
+                        <form action="{% url 'pagar-ingreso-profesional' deuda.id %}" method="POST" onsubmit="return confirm('¿Confirmás que recibiste este pago? Esta acción registrará el ingreso en la caja.');">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success btn-sm">Marcar como Pagado</button>
+                        </form>
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center">No hay ingresos registrados.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
