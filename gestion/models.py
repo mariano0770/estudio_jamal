@@ -69,21 +69,34 @@ class Abono(models.Model):
     def __str__(self):
         return f"{self.nombre} ({self.cantidad_sesiones} sesiones)"
 
+# gestion/models.py
+
 class ClienteAbono(models.Model):
     """Registra la compra de un abono por parte de un cliente."""
+
+    # --- AÑADÍ ESTAS LÍNEAS ---
+    ESTADO_CHOICES = [
+        ('Pendiente', 'Pendiente de Pago'),
+        ('Pagado', 'Pagado'),
+    ]
+    # --- FIN DE LÍNEAS NUEVAS ---
+
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     abono = models.ForeignKey(Abono, on_delete=models.CASCADE)
     fecha_compra = models.DateField(default=timezone.now)
     sesiones_restantes = models.PositiveIntegerField()
 
+    # --- AÑADÍ ESTA LÍNEA ---
+    estado_pago = models.CharField(max_length=10, choices=ESTADO_CHOICES, default='Pendiente')
+
     def save(self, *args, **kwargs):
-        # Si es la primera vez que se guarda, se asignan las sesiones del abono.
         if self.pk is None:
             self.sesiones_restantes = self.abono.cantidad_sesiones
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"Abono de {self.cliente} - {self.abono.nombre} ({self.sesiones_restantes} restantes)"
+        # --- MODIFICÁ ESTA LÍNEA para que muestre el estado ---
+        return f"Abono de {self.cliente} - {self.abono.nombre} ({self.sesiones_restantes} restantes) - [{self.estado_pago}]"
 
 class Caja(models.Model):
     """Registra todos los movimientos de dinero."""

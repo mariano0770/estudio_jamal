@@ -184,35 +184,27 @@ def cancelar_turno(request, turno_id):
 @staff_member_required
 def vender_abono(request):
     if request.method == 'POST':
-        form = VentaAbonoForm(request.POST)
+        # Asumo que tu VentaAbonoForm pide 'cliente' y 'abono'
+        # (Si pide 'empleado', lo ignoraremos por ahora)
+        form = VentaAbonoForm(request.POST) 
+
         if form.is_valid():
             cliente = form.cleaned_data['cliente']
             abono = form.cleaned_data['abono']
-            empleado = form.cleaned_data['empleado']
 
-            ClienteAbono.objects.create(cliente=cliente, abono=abono)
+            # --- NUEVA LÓGICA ---
+            # 1. Creamos el abono con estado "Pendiente" por defecto
+            ClienteAbono.objects.create(
+                cliente=cliente,
+                abono=abono
+                # El estado_pago es 'Pendiente' por defecto (según el modelo)
+            )
 
-            # Lógica de Caja/Deuda
-            if empleado.es_dueño:
-                # Si vende el dueño, es un ingreso directo a la caja
-                Caja.objects.create(
-                    concepto=f'Venta de Abono: {abono.nombre} - {cliente.nombre}',
-                    monto=abono.precio,
-                    tipo='Ingreso'
-                )
-            else:
-                # Si vende un empleado, se genera una deuda para el dueño
-                monto_para_dueño = abono.precio * (abono.porcentaje_dueño / 100)
-                if monto_para_dueño > 0:
-                    DeudaEmpleado.objects.create(
-                        empleado=empleado,
-                        monto=monto_para_dueño,
-                        # No asociamos a un turno, sino al concepto
-                        concepto_adicional=f"Venta de Abono '{abono.nombre}' a {cliente.nombre}"
-                    )
+            # 2. YA NO GENERAMOS EL INGRESO EN LA CAJA AQUÍ.
+            # Lo haremos cuando se marque como "Pagado".
 
-            messages.success(request, f'Abono "{abono.nombre}" vendido a {cliente.nombre} exitosamente.')
-            return redirect('dashboard')
+            messages.success(request, f'Abono "{abono.nombre}" vendido a {cliente.nombre}. Está PENDIENTE DE PAGO.')
+            return redirect('dashboard') # O a la nueva lista de deudas de clientes
     else:
         form = VentaAbonoForm()
 
