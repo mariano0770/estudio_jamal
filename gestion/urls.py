@@ -61,6 +61,8 @@ urlpatterns = [
     path('profesionales/registrar-ingreso/', views.registrar_ingreso_profesional, name='registrar-ingreso-profesional'),
     path('profesionales/lista-deudas/', views.lista_ingresos_profesionales, name='lista-ingresos-profesionales'),
     path('profesionales/pagar/<int:ingreso_id>/', views.pagar_ingreso_profesional, name='pagar-ingreso-profesional'),
+    path('clientes/lista-deudas/', views.lista_deudas_clientes, name='lista_deudas_clientes'),
+    path('clientes/pagar-abono/<int:cliente_abono_id>/', views.pagar_abono_cliente, name='pagar-abono-cliente'),
 ]
 
 

@@ -1,0 +1,63 @@
+{% extends 'gestion/base.html' %}
+
+{% block title %}Deudas de Clientes por Abonos{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>Deudas de Clientes (Abonos)</h1>
+        <div class="card text-white bg-danger">
+            <div class="card-body">
+                <h5 class="card-title">Total Pendiente de Cobro</h5>
+                <p class="card-text fs-4 fw-bold">${{ total_pendiente|floatformat:2 }}</p>
+            </div>
+        </div>
+    </div>
+
+    <p>Aquí se listan todos los abonos vendidos a clientes y su estado de pago.</p>
+
+    <table class="table table-striped table-hover bg-white shadow-sm">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">Fecha Compra</th>
+                <th scope="col">Cliente</th>
+                <th scope="col">Abono</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for abono_cliente in lista_abonos %}
+            <tr>
+                <td>{{ abono_cliente.fecha_compra|date:"d/m/Y" }}</td>
+                <td>{{ abono_cliente.cliente.nombre }} {{ abono_cliente.cliente.apellido }}</td>
+                <td>{{ abono_cliente.abono.nombre }}</td>
+                <td class="fw-bold">${{ abono_cliente.abono.precio|floatformat:2 }}</td>
+                <td>
+                    {% if abono_cliente.estado_pago == 'Pendiente' %}
+                        <span class="badge bg-warning text-dark">Pendiente</span>
+                    {% else %}
+                        <span class="badge bg-success">Pagado</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if abono_cliente.estado_pago == 'Pendiente' %}
+                        <form action="{% url 'pagar-abono-cliente' abono_cliente.id %}" method="POST" onsubmit="return confirm('¿Confirmás que recibiste este pago? Esta acción registrará el ingreso en la caja.');">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success btn-sm">Marcar como Pagado</button>
+                        </form>
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center">No hay abonos vendidos.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -889,3 +889,49 @@ def pagar_ingreso_profesional(request, ingreso_id):
 
     # 4. Redirigimos de vuelta a la lista de deudas
     return redirect('lista-ingresos-profesionales')
+
+@login_required
+@staff_member_required
+def lista_deudas_clientes(request):
+    """
+    Muestra una lista de todos los abonos vendidos y su estado de pago.
+    """
+    # Buscamos todos los abonos, mostrando Pendientes primero
+    lista_abonos = ClienteAbono.objects.all().order_by('estado_pago', '-fecha_compra')
+
+    # Calculamos el total de dinero pendiente (sumamos el precio del abono, no del ClienteAbono)
+    total_pendiente = ClienteAbono.objects.filter(estado_pago='Pendiente').aggregate(
+        total=Sum('abono__precio')
+    )['total'] or 0
+
+    contexto = {
+        'lista_abonos': lista_abonos,
+        'total_pendiente': total_pendiente
+    }
+    return render(request, 'gestion/lista_deudas_clientes.html', contexto)
+
+@login_required
+@staff_member_required
+def pagar_abono_cliente(request, cliente_abono_id):
+    """
+    Marca un abono de cliente como 'Pagado' y registra el ingreso en la caja.
+    """
+    # 1. Buscamos el abono comprado específico
+    abono_comprado = get_object_or_404(ClienteAbono, id=cliente_abono_id)
+
+    if request.method == 'POST':
+        # 2. Cambiamos el estado a "Pagado"
+        abono_comprado.estado_pago = 'Pagado'
+        abono_comprado.save()
+
+        # 3. Creamos el INGRESO en la Caja
+        Caja.objects.create(
+            concepto=f'Pago de Abono: {abono_comprado.abono.nombre} - {abono_comprado.cliente.nombre}',
+            monto=abono_comprado.abono.precio,
+            tipo='Ingreso'
+        )
+
+        messages.success(request, f'¡Pago del abono de {abono_comprado.cliente.nombre} registrado en la caja!')
+
+    # 4. Redirigimos de vuelta a la lista de deudas de clientes
+    return redirect('lista_deudas_clientes')
