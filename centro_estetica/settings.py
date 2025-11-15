@@ -136,3 +136,5 @@ LOGIN_URL = '/admin/login/'
 # CONFIGURACIÓN PARA ARCHIVOS SUBIDOS POR EL USUARIO
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# Este es un comentario para forzar la actualización de Git
