@@ -772,12 +772,6 @@ def lista_planes(request):
 
 @login_required
 @staff_member_required
-def lista_planes(request):
-    planes = Plan.objects.all().order_by('nombre')
-    return render(request, 'gestion/lista_planes.html', {'planes': planes})
-
-@login_required
-@staff_member_required
 def crear_plan(request):
     if request.method == 'POST':
         form = PlanForm(request.POST)
