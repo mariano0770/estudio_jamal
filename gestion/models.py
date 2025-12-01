@@ -3,6 +3,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
+from dateutil.relativedelta import relativedelta
 
 class Cliente(models.Model):
     user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True, blank=True)
@@ -22,21 +23,85 @@ class Servicio(models.Model):
     descripcion = models.TextField(blank=True)
     precio = models.DecimalField(max_digits=10, decimal_places=2)
     duracion_minutos = models.PositiveIntegerField()
-    porcentaje_dueño = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
 
     def __str__(self):
         return f"{self.nombre} (${self.precio})"
 
 class Empleado(models.Model):
+    # Esto es solo para usuarios del sistema (Admin, Recepcionista)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     nombre = models.CharField(max_length=100)
     apellido = models.CharField(max_length=100)
     puesto = models.CharField(max_length=100, blank=True)
-    fecha_contratacion = models.DateField(default=timezone.now)
     es_dueño = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.nombre} {self.apellido}"
+
+class Profesional(models.Model):
+    """
+    Profesores externos (ej: Profe de Pilates).
+    No tienen usuario de sistema, solo se usan para calcular comisiones.
+    """
+    nombre = models.CharField(max_length=100)
+    actividad = models.CharField(max_length=100, help_text="Ej: Pilates, Yoga")
+    porcentaje_centro = models.DecimalField(
+        max_digits=5, 
+        decimal_places=2,
+        default=30.0,
+        help_text="Porcentaje que se queda la dueña (Ej: 30%)"
+    )
+    activo = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"{self.nombre} ({self.actividad})"
+
+class Plan(models.Model):
+    """
+    Ahora el Plan pertenece a un Profesional.
+    Ej: Plan Pilates Mensual -> Pertenece al Profe Jorge.
+    """
+    FRECUENCIA_CHOICES = [
+        ('Semanal', 'Semanal'),
+        ('Mensual', 'Mensual'),
+    ]
+    nombre = models.CharField(max_length=150, help_text="Ej: Pase Libre Pilates")
+    profesional = models.ForeignKey(Profesional, on_delete=models.CASCADE, related_name='planes')
+    servicios = models.ManyToManyField(Servicio, help_text="Servicios incluidos")
+    precio = models.DecimalField(max_digits=10, decimal_places=2)
+    frecuencia = models.CharField(max_length=10, choices=FRECUENCIA_CHOICES)
+    sesiones_por_periodo = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f"{self.nombre} - ${self.precio} ({self.profesional.nombre})"
+
+class ClientePlan(models.Model):
+    """Suscripciones activas de los clientes"""
+    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    plan = models.ForeignKey(Plan, on_delete=models.CASCADE)
+    fecha_inicio = models.DateField(default=timezone.now)
+    fecha_fin = models.DateField()
+    sesiones_usadas = models.PositiveIntegerField(default=0)
+    # Guardamos cuánto le debemos al profe por esta venta específica
+    monto_profesional = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    pagado_al_profesional = models.BooleanField(default=False)
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            # Calcular fecha fin
+            if self.plan.frecuencia == 'Mensual':
+                self.fecha_fin = self.fecha_inicio + relativedelta(months=1)
+            else:
+                self.fecha_fin = self.fecha_inicio + relativedelta(weeks=1)
+            
+            # Calcular cuánto le toca al profesional (Precio - % del centro)
+            porcentaje_profe = 100 - self.plan.profesional.porcentaje_centro
+            self.monto_profesional = self.plan.precio * (porcentaje_profe / 100)
+            
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.cliente} - {self.plan.nombre}"
 
 class Turno(models.Model):
     ESTADO_OPCIONES = [
@@ -45,230 +110,44 @@ class Turno(models.Model):
         ('Cancelado', 'Cancelado'),
         ('Completado', 'Completado'),
     ]
-
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     servicio = models.ForeignKey(Servicio, on_delete=models.SET_NULL, null=True)
-    empleado = models.ForeignKey(Empleado, on_delete=models.SET_NULL, null=True, blank=True)
+    # Vinculamos turno a un plan activo para descontar sesiones
+    plan_usado = models.ForeignKey(ClientePlan, on_delete=models.SET_NULL, null=True, blank=True)
     fecha_hora_inicio = models.DateTimeField()
     estado = models.CharField(max_length=10, choices=ESTADO_OPCIONES, default='Pendiente')
 
     def __str__(self):
-        # Formateamos la fecha para que se vea más amigable
-        fecha_formateada = self.fecha_hora_inicio.strftime("%d/%m/%Y a las %H:%M hs")
-        return f"Turno de {self.cliente.nombre} para {self.servicio.nombre} - {fecha_formateada}"
-
-class Abono(models.Model):
-    """Define un tipo de paquete de servicios que se puede vender."""
-    nombre = models.CharField(max_length=150)
-    descripcion = models.TextField(blank=True)
-    precio = models.DecimalField(max_digits=10, decimal_places=2)
-    cantidad_sesiones = models.PositiveIntegerField()
-    servicios = models.ManyToManyField(Servicio, related_name='abonos')
-    porcentaje_dueño = models.DecimalField(max_digits=5, decimal_places=2, default=0.0, help_text="Porcentaje del precio de venta que corresponde al dueño.")
-      
-    def __str__(self):
-        return f"{self.nombre} ({self.cantidad_sesiones} sesiones)"
-
-# gestion/models.py
-
-class ClienteAbono(models.Model):
-    """Registra la compra de un abono por parte de un cliente."""
-
-    # --- AÑADÍ ESTAS LÍNEAS ---
-    ESTADO_CHOICES = [
-        ('Pendiente', 'Pendiente de Pago'),
-        ('Pagado', 'Pagado'),
-    ]
-    # --- FIN DE LÍNEAS NUEVAS ---
-
-    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
-    abono = models.ForeignKey(Abono, on_delete=models.CASCADE)
-    fecha_compra = models.DateField(default=timezone.now)
-    sesiones_restantes = models.PositiveIntegerField()
-
-    # --- AÑADÍ ESTA LÍNEA ---
-    estado_pago = models.CharField(max_length=10, choices=ESTADO_CHOICES, default='Pendiente')
-
-    def save(self, *args, **kwargs):
-        if self.pk is None:
-            self.sesiones_restantes = self.abono.cantidad_sesiones
-        super().save(*args, **kwargs)
-
-    def __str__(self):
-        # --- MODIFICÁ ESTA LÍNEA para que muestre el estado ---
-        return f"Abono de {self.cliente} - {self.abono.nombre} ({self.sesiones_restantes} restantes) - [{self.estado_pago}]"
+        return f"Turno {self.cliente} - {self.fecha_hora_inicio}"
 
 class Caja(models.Model):
-    """Registra todos los movimientos de dinero."""
-    TIPO_MOVIMIENTO = [
-        ('Ingreso', 'Ingreso'),
-        ('Egreso', 'Egreso'),
-    ]
+    TIPO_MOVIMIENTO = [('Ingreso', 'Ingreso'), ('Egreso', 'Egreso')]
     fecha_hora = models.DateTimeField(default=timezone.now)
     concepto = models.CharField(max_length=255)
     monto = models.DecimalField(max_digits=10, decimal_places=2)
     tipo = models.CharField(max_length=7, choices=TIPO_MOVIMIENTO)
 
-    # Este campo es opcional, para vincular un pago a un turno específico.
-    turno_asociado = models.ForeignKey(Turno, on_delete=models.SET_NULL, null=True, blank=True)
-
     def __str__(self):
-        return f"{self.fecha_hora.strftime('%d/%m/%Y %H:%M')} - {self.tipo}: ${self.monto} ({self.concepto})"    
+        return f"{self.tipo}: ${self.monto} ({self.concepto})"    
 
-class DeudaEmpleado(models.Model):
-    """Registra el dinero que un empleado le debe al dueño."""
-    ESTADO_CHOICES = [
-        ('Pendiente', 'Pendiente de Pago'),
-        ('Pagada', 'Pagada'),
-    ]
-
-    empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE)
-    turno = models.ForeignKey(Turno, on_delete=models.CASCADE)
-    concepto_adicional = models.CharField(max_length=255, blank=True, null=True)
-    monto = models.DecimalField(max_digits=10, decimal_places=2)
-    fecha_generada = models.DateTimeField(default=timezone.now)
-    estado = models.CharField(max_length=10, choices=ESTADO_CHOICES, default='Pendiente')
-
-    def __str__(self):
-        return f"Deuda de {self.empleado} por turno del {self.turno.fecha_hora_inicio.strftime('%d/%m/%y')}"
-
-    class Meta:
-        verbose_name_plural = "Deudas de Empleados"
-    
 class Configuracion(models.Model):
-    nombre_comercio = models.CharField(max_length=100, default="Mi Centro de Estética")
+    nombre_comercio = models.CharField(max_length=100, default="Mi Centro")
     logo = models.ImageField(upload_to='logos/', null=True, blank=True)
-    email_remitente = models.EmailField(blank=True, help_text="Email desde donde se enviarán las notificaciones.")
+    email_remitente = models.EmailField(blank=True)
 
-    # Campos para configuración de SMTP (para el futuro)
-    email_host = models.CharField(max_length=100, blank=True)
-    email_port = models.PositiveIntegerField(null=True, blank=True)
-    email_user = models.CharField(max_length=100, blank=True)
-    email_password = models.CharField(max_length=100, blank=True)
-
-    def __str__(self):
-        return "Configuración del Sitio"
-
-    # Con esto nos aseguramos de que solo haya una fila de configuración en la BBDD
     def save(self, *args, **kwargs):
         self.pk = 1
         super(Configuracion, self).save(*args, **kwargs)
-
-    class Meta:
-        verbose_name_plural = "Configuración"
 
 class Asistencia(models.Model):
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     fecha_hora_ingreso = models.DateTimeField(default=timezone.now)
 
-    def __str__(self):
-        return f"Asistencia de {self.cliente} - {self.fecha_hora_ingreso.strftime('%d/%m/%Y %H:%M')}"
-    
 class Producto(models.Model):
     nombre = models.CharField(max_length=150)
     descripcion = models.TextField(blank=True)
     precio = models.DecimalField(max_digits=10, decimal_places=2)
-    stock = models.PositiveIntegerField(default=0, help_text="Cantidad actual en inventario")
+    stock = models.PositiveIntegerField(default=0)
 
     def __str__(self):
-        return f"{self.nombre} (${self.precio})"
-
-    class Meta:
-        verbose_name_plural = "Productos"
-
-class Plan(models.Model):
-    FRECUENCIA_CHOICES = [
-        ('Semanal', 'Semanal'),
-        ('Mensual', 'Mensual'),
-    ]
-    nombre = models.CharField(max_length=150, help_text="Ej: Plan Pilates Mensual")
-    servicios = models.ManyToManyField(Servicio, help_text="¿Qué servicios incluye este plan?")
-    precio = models.DecimalField(max_digits=10, decimal_places=2)
-    frecuencia = models.CharField(max_length=10, choices=FRECUENCIA_CHOICES)
-    sesiones_por_periodo = models.PositiveIntegerField(help_text="¿Cuántas clases puede tomar por semana/mes?")
-    porcentaje_dueño = models.DecimalField(max_digits=5, decimal_places=2, default=0.0, help_text="Porcentaje del precio de venta que corresponde al dueño.")
-
-    def __str__(self):
-        return f"{self.nombre} ({self.sesiones_por_periodo} sesiones por {self.frecuencia.lower()})"
-
-class ClientePlan(models.Model):
-    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
-    plan = models.ForeignKey(Plan, on_delete=models.CASCADE)
-    fecha_inicio = models.DateField(default=timezone.now)
-    fecha_fin = models.DateField()
-    sesiones_usadas = models.PositiveIntegerField(default=0)
-
-    def save(self, *args, **kwargs):
-        # Calculamos la fecha de fin automáticamente al guardar
-        if not self.pk: # Solo si es un objeto nuevo
-            from dateutil.relativedelta import relativedelta
-            if self.plan.frecuencia == 'Mensual':
-                self.fecha_fin = self.fecha_inicio + relativedelta(months=1)
-            else: # Semanal
-                self.fecha_fin = self.fecha_inicio + relativedelta(weeks=1)
-        super().save(*args, **kwargs)
-
-    def __str__(self):
-        return f"Suscripción de {self.cliente} al {self.plan.nombre}"   
-
-class Profesional(models.Model):
-    """
-    Guarda los datos de un profesional externo que alquila un espacio.
-    Ej: Jorge de Pilates.
-    """
-    nombre = models.CharField(max_length=100)
-    actividad = models.CharField(max_length=100)
-    porcentaje_para_centro = models.DecimalField(
-        max_digits=5, 
-        decimal_places=2,
-        help_text="El porcentaje (ej: 30) que el profesional le paga al centro."
-    )
-    activo = models.BooleanField(default=True)
-
-    def __str__(self):
-        return f"{self.nombre} ({self.actividad})"
-
-class IngresoProfesional(models.Model):
-    """
-    Registra un ingreso generado por un profesional externo.
-    Esto representa una deuda del profesional CON el centro.
-    """
-    ESTADO_CHOICES = [
-        ('Pendiente', 'Pendiente de Pago'),
-        ('Pagado', 'Pagado'),
-    ]
-
-    profesional = models.ForeignKey(Profesional, on_delete=models.CASCADE)
-    cliente_nombre = models.CharField(max_length=200, help_text="Nombre del cliente del profesional")
-    monto_total_abono = models.DecimalField(max_digits=10, decimal_places=2)
-    monto_para_centro = models.DecimalField(max_digits=10, decimal_places=2, editable=False)
-    estado_pago = models.CharField(max_length=10, choices=ESTADO_CHOICES, default='Pendiente')
-    fecha_registro = models.DateField(default=timezone.now)
-
-    def save(self, *args, **kwargs):
-        # Lógica automática: Calcula el monto para el centro antes de guardar
-        self.monto_para_centro = self.monto_total_abono * (self.profesional.porcentaje_para_centro / 100)
-        super().save(*args, **kwargs)
-
-    def __str__(self):
-        return f"{self.profesional.nombre} - ${self.monto_para_centro} ({self.estado_pago})"
-
-class Comision(models.Model):
-    """
-    Registra las comisiones generadas por la venta de abonos.
-    NOTA: Este modelo parece ser viejo, el proyecto ahora usa DeudaEmpleado.
-    Revisar si se debe borrar o mantener.
-    """
-    ESTADO_CHOICES = [
-        ('Pendiente', 'Pendiente de Pago'),
-        ('Pagada', 'Pagada'),
-    ]
-    
-    # Tu 'views.py' espera que 'venta_abono' sea un link a ClienteAbono
-    venta_abono = models.OneToOneField(ClienteAbono, on_delete=models.CASCADE)
-    monto = models.DecimalField(max_digits=10, decimal_places=2)
-    fecha_generada = models.DateTimeField(default=timezone.now)
-    estado = models.CharField(max_length=10, choices=ESTADO_CHOICES, default='Pendiente')
-
-    def __str__(self):
-        return f"Comisión de ${self.monto} por venta de {self.venta_abono.abono.nombre} a {self.venta_abono.cliente.nombre}"
+        return f"{self.nombre}"

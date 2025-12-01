@@ -15,7 +15,7 @@
     <div class="kiosk-container text-center">
         
         {% if configuracion.logo %}
-            <img src="{{ configuracion.logo.url }}" alt="Logo" class="img-fluid mb-3" style="max-height: 80px;">
+            <img src="{{ configuracion.logo.url }}" alt="Logo" class="img-fluid mb-3" style="max-height: 240px;">
         {% endif %}
         <h1 class="display-5 mb-4">{{ configuracion.nombre_comercio|default:"¡Bienvenida/o!" }}</h1>
 
